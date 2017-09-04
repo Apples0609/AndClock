@@ -5,6 +5,8 @@ import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import cn.smiles.andclock.SmilesApplication;
+
 /**
  * @author Juergen Punz
  *         Injects InputEvents to Android-Device
@@ -107,6 +109,9 @@ public class Injector {
                     suShell.destroy();
                 } catch (Exception e) {
                     e.printStackTrace();
+                    String message = e.getMessage();
+                    System.out.println(message);
+                    SmilesApplication.showToast("此功能手机必须root");
                 }
             }
         });
