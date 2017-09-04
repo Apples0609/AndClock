@@ -37,13 +37,15 @@ public class ClockView extends View {
         paint.setStrokeCap(Paint.Cap.ROUND);
         paint.setStrokeJoin(Paint.Join.ROUND);
 
+        Calendar calendar = Calendar.getInstance();
+        int second = calendar.get(Calendar.SECOND);
         this.postDelayed(new Runnable() {
             @Override
             public void run() {
                 invalidate();
                 postDelayed(this, 1000);
             }
-        }, 1000);
+        }, 1000 - second);
     }
 
 
@@ -90,7 +92,7 @@ public class ClockView extends View {
         int hour = calendar.get(Calendar.HOUR);
         int minute = calendar.get(Calendar.MINUTE);
         int second = calendar.get(Calendar.SECOND);
-        System.out.println("hour= " + hour + ",minute=" + minute + ",second=" + second);
+//        System.out.println("hour= " + hour + ",minute=" + minute + ",second=" + second);
         //时针
         paint.setStrokeWidth(8);
         float[] hourps = calculatePoint(hour * 30, 100);
@@ -108,12 +110,33 @@ public class ClockView extends View {
         paint.setTextSize(24);
         paint.setTextAlign(Paint.Align.CENTER);
         for (int n = 1; n <= 12; n++) {
-            double theta = (n - 3) * (Math.PI * 2) / 12;
-            float x = (float) (240 * 0.7 * Math.cos(theta));
-            float y = (float) (240 * 0.7 * Math.sin(theta));
+            float[] point = calculatePoint2(30 * n);
+            float x = point[0];
+            float y = point[1];
             canvas.drawText(String.valueOf(n), x, y, paint);
         }
     }
+
+    private float[] calculatePoint2(float angle) {
+        float[] points = new float[2];
+        float length = 240 * 0.73f;
+        if (angle <= 90f) {
+            points[0] = (float) Math.sin(angle * Math.PI / 180) * length;
+            points[1] = -(float) Math.cos(angle * Math.PI / 180) * length;
+        } else if (angle <= 180f) {
+            points[0] = (float) Math.cos((angle - 90) * Math.PI / 180) * length;
+            points[1] = (float) Math.sin((angle - 90) * Math.PI / 180) * length;
+        } else if (angle <= 270f) {
+            points[0] = -(float) Math.sin((angle - 180) * Math.PI / 180) * length;
+            points[1] = (float) Math.cos((angle - 180) * Math.PI / 180) * length;
+        } else if (angle <= 360f) {
+            points[0] = -(float) Math.cos((angle - 270) * Math.PI / 180) * length;
+            points[1] = -(float) Math.sin((angle - 270) * Math.PI / 180) * length;
+        }
+        return points;
+    }
+
+    private final int DEFAULT_LEFT_LENGHT = 20;
 
     /**
      * 根据角度和长度计算线段的起点和终点的坐标
@@ -125,23 +148,23 @@ public class ClockView extends View {
     private float[] calculatePoint(float angle, float length) {
         float[] points = new float[4];
         if (angle <= 90f) {
-            points[0] = -(float) Math.sin(angle * Math.PI / 180) * 20;
-            points[1] = (float) Math.cos(angle * Math.PI / 180) * 20;
+            points[0] = -(float) Math.sin(angle * Math.PI / 180) * DEFAULT_LEFT_LENGHT;
+            points[1] = (float) Math.cos(angle * Math.PI / 180) * DEFAULT_LEFT_LENGHT;
             points[2] = (float) Math.sin(angle * Math.PI / 180) * length;
             points[3] = -(float) Math.cos(angle * Math.PI / 180) * length;
         } else if (angle <= 180f) {
-            points[0] = -(float) Math.cos((angle - 90) * Math.PI / 180) * 20;
-            points[1] = -(float) Math.sin((angle - 90) * Math.PI / 180) * 20;
+            points[0] = -(float) Math.cos((angle - 90) * Math.PI / 180) * DEFAULT_LEFT_LENGHT;
+            points[1] = -(float) Math.sin((angle - 90) * Math.PI / 180) * DEFAULT_LEFT_LENGHT;
             points[2] = (float) Math.cos((angle - 90) * Math.PI / 180) * length;
             points[3] = (float) Math.sin((angle - 90) * Math.PI / 180) * length;
         } else if (angle <= 270f) {
-            points[0] = (float) Math.sin((angle - 180) * Math.PI / 180) * 20;
-            points[1] = -(float) Math.cos((angle - 180) * Math.PI / 180) * 20;
+            points[0] = (float) Math.sin((angle - 180) * Math.PI / 180) * DEFAULT_LEFT_LENGHT;
+            points[1] = -(float) Math.cos((angle - 180) * Math.PI / 180) * DEFAULT_LEFT_LENGHT;
             points[2] = -(float) Math.sin((angle - 180) * Math.PI / 180) * length;
             points[3] = (float) Math.cos((angle - 180) * Math.PI / 180) * length;
         } else if (angle <= 360f) {
-            points[0] = (float) Math.cos((angle - 270) * Math.PI / 180) * 20;
-            points[1] = (float) Math.sin((angle - 270) * Math.PI / 180) * 20;
+            points[0] = (float) Math.cos((angle - 270) * Math.PI / 180) * DEFAULT_LEFT_LENGHT;
+            points[1] = (float) Math.sin((angle - 270) * Math.PI / 180) * DEFAULT_LEFT_LENGHT;
             points[2] = -(float) Math.cos((angle - 270) * Math.PI / 180) * length;
             points[3] = -(float) Math.sin((angle - 270) * Math.PI / 180) * length;
         }
