@@ -25,7 +25,10 @@
             </intent-filter>
             -->
         </activity>
-        <activity android:name=".GoHomeActivity">
+        <activity
+            android:name=".GoHomeActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -34,9 +37,24 @@
         </activity>
 
         <service
-            android:name=".HomeService"
+            android:name=".service.AndroidService"
             android:enabled="true"
-            android:exported="false">
+            android:exported="true">
+        </service>
+
+        <receiver android:name=".receiver.BootBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.USER_PRESENT"/>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".service.RemoteService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":RemoteSer">
         </service>
     </application>
 

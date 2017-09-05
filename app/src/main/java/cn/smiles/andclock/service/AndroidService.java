@@ -1,13 +1,21 @@
-package cn.smiles.andclock;
+package cn.smiles.andclock.service;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.app.Service;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
 import android.os.IBinder;
+import android.os.RemoteException;
 import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,9 +25,12 @@ import android.widget.Toast;
 
 import java.lang.reflect.Method;
 
+import cn.smiles.andclock.GoHomeActivity;
+import cn.smiles.andclock.R;
+import cn.smiles.andclock.aidl.IMyAidlInterface;
 import cn.smiles.andclock.tools.Injector;
 
-public class HomeService extends Service {
+public class AndroidService extends Service {
 
     private final String TAG = "===";
     private WindowManager windowManager;
@@ -28,9 +39,12 @@ public class HomeService extends Service {
     private int wmParamsX;
     private int wmParamsY;
     private int swh = 100;
+    private int screenHeight;
+    private int screenWidth;
+    private MyIAIDL myAidl;
+    private MyServiceConnection myConn;
 
-
-    public HomeService() {
+    public AndroidService() {
     }
 
     @Override
@@ -38,6 +52,24 @@ public class HomeService extends Service {
         super.onCreate();
         asp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         windowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+        getScreenHeight();
+        myAidl = new MyIAIDL();
+        if (myConn == null)
+            myConn = new MyServiceConnection();
+    }
+
+    /**
+     * 获取屏幕宽高度、状态栏高度
+     */
+    private void getScreenHeight() {
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        screenHeight = displayMetrics.heightPixels;
+        screenWidth = displayMetrics.widthPixels;
+    }
+
+    @Override
+    public void onStart(Intent intent, int startId) {
+        bindService(new Intent(getApplicationContext(), RemoteService.class), myConn, Context.BIND_IMPORTANT);
     }
 
     @Override
@@ -71,15 +103,16 @@ public class HomeService extends Service {
         wmParams.height = swh;
         wmParams.x = wmParamsX;
         wmParams.y = wmParamsY;
+        wmParams.gravity = Gravity.CENTER;
         wmContentView.setOnTouchListener(new View.OnTouchListener() {
             int downX, downY;
             int paramX, paramY;
 
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
+            public boolean onTouch(final View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        Log.i(TAG, "ACTION_DOWN");
+//                        Log.i(TAG, "ACTION_DOWN");
                         downX = (int) event.getRawX();
                         downY = (int) event.getRawY();
                         paramX = wmParams.x;
@@ -87,7 +120,7 @@ public class HomeService extends Service {
                         v.setBackgroundResource(R.drawable.ic_android_black_pressed);
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        Log.i(TAG, "ACTION_MOVE");
+//                        Log.i(TAG, "ACTION_MOVE");
                         int dx = (int) event.getRawX() - downX;
                         int dy = (int) event.getRawY() - downY;
                         if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
@@ -98,15 +131,37 @@ public class HomeService extends Service {
                         break;
                     case MotionEvent.ACTION_UP:
                     case MotionEvent.ACTION_CANCEL:
-                        Log.i(TAG, "ACTION_UP");
+//                        Log.i(TAG, "ACTION_UP");
                         v.setBackgroundResource(R.drawable.ic_android_black_normal);
                         int ux = (int) event.getRawX();
                         int uy = (int) event.getRawY();
                         if (Math.abs(ux - downX) < 3 && Math.abs(uy - downY) < 3) {
                             v.performClick();
+                        } else {
+                            final int x = wmParams.x;
+                            ValueAnimator animation;
+                            if (x < 0) {//向左移动
+                                animation = ValueAnimator.ofInt(x, -screenWidth / 2);
+                            } else {//向右移动
+                                animation = ValueAnimator.ofInt(x, screenWidth / 2);
+                            }
+                            animation.setDuration(360);
+                            animation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                @Override
+                                public void onAnimationUpdate(ValueAnimator animation) {
+                                    wmParams.x = (int) animation.getAnimatedValue();
+                                    windowManager.updateViewLayout(v, wmParams);
+                                }
+                            });
+                            animation.addListener(new AnimatorListenerAdapter() {
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    asp.edit().putInt("wmParamsX", wmParams.x).apply();
+                                    asp.edit().putInt("wmParamsY", wmParams.y).apply();
+                                }
+                            });
+                            animation.start();
                         }
-                        asp.edit().putInt("wmParamsX", wmParams.x).apply();
-                        asp.edit().putInt("wmParamsY", wmParams.y).apply();
                         break;
                 }
                 return true;
@@ -207,7 +262,7 @@ public class HomeService extends Service {
     private View.OnLongClickListener longClickListener = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View v) {
-            Toast.makeText(HomeService.this, v.getContentDescription(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(AndroidService.this, v.getContentDescription(), Toast.LENGTH_SHORT).show();
             return true;
         }
     };
@@ -239,6 +294,29 @@ public class HomeService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        return myAidl;
+    }
+
+    private class MyIAIDL extends IMyAidlInterface.Stub {
+        @Override
+        public String getSername(int anInt) throws RemoteException {
+            return "AndroidService===" + anInt;
+        }
+    }
+
+    private class MyServiceConnection implements ServiceConnection {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            // 另一个服务连接成功时会调用
+            Log.i(TAG, "AndroidService 连接成功");
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            // 和另一个服务连接被异常中断时会调用,启动并绑定
+            Log.i(TAG, "RemoteService 被干掉了");
+            startService(new Intent(getApplicationContext(), RemoteService.class));
+            bindService(new Intent(getApplicationContext(), RemoteService.class), myConn, Context.BIND_IMPORTANT);
+        }
     }
 }

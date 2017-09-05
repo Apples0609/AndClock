@@ -7,6 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
+import cn.smiles.andclock.service.AndroidService;
+import cn.smiles.andclock.service.RemoteService;
+
 public class GoHomeActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
     private final String TAG = "===";
     private int statusHeight = 25;
@@ -23,17 +26,22 @@ public class GoHomeActivity extends AppCompatActivity implements CompoundButton.
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
 
     }
 
-
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        Intent intent = new Intent(this.getApplicationContext(), HomeService.class);
+        Intent intent = new Intent(this.getApplicationContext(), AndroidService.class);
         intent.putExtra("isChecked", isChecked);
         startService(intent);
+        startService(new Intent(getApplicationContext(), RemoteService.class));
     }
 
     private void getStatusBarHeight() {
