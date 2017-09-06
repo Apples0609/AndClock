@@ -15,6 +15,7 @@ import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -38,7 +39,7 @@ public class AndroidService extends Service {
     private SharedPreferences asp;
     private int wmParamsX;
     private int wmParamsY;
-    private int swh = 100;
+    private int swh;
     private int screenHeight;
     private int screenWidth;
     private MyIAIDL myAidl;
@@ -50,12 +51,17 @@ public class AndroidService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        swh = dp2px(51);
         asp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         windowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
         getScreenHeight();
         myAidl = new MyIAIDL();
         if (myConn == null)
             myConn = new MyServiceConnection();
+    }
+
+    private int dp2px(int value) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, getResources().getDisplayMetrics());
     }
 
     /**
@@ -186,6 +192,7 @@ public class AndroidService extends Service {
         wmParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
         wmParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         wmParams.format = PixelFormat.RGBA_8888;
+        wmParams.windowAnimations = android.R.style.Animation_InputMethod;
         view.findViewById(R.id.go_home).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

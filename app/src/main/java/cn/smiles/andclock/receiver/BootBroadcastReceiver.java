@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.preference.PreferenceManager;
 
 import cn.smiles.andclock.service.AndroidService;
+import cn.smiles.andclock.service.RemoteService;
 
 /**
  * 监听开机、点亮屏幕、网络改变广播
@@ -23,6 +24,7 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
             Intent intent2 = new Intent(context.getApplicationContext(), AndroidService.class);
             intent2.putExtra("isChecked", true);
             context.startService(intent2);
+            context.startService(new Intent(context.getApplicationContext(), RemoteService.class));
         }
     }
 }
