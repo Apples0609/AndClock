@@ -1,11 +1,20 @@
 package cn.smiles.andclock;
 
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Comparator;
 
 import cn.smiles.andclock.service.AndroidService;
 import cn.smiles.andclock.service.RemoteService;
@@ -24,6 +33,57 @@ public class GoHomeActivity extends AppCompatActivity implements CompoundButton.
         switch1.setChecked(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("isChecked", false));
 
     }
+
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.open_app_setting:
+                showInstalledAppDetails(getPackageName());
+                break;
+            case R.id.button4:
+                File file = new File("/storage");
+                File[] files = file.listFiles(new FilenameFilter() {
+                    @Override
+                    public boolean accept(File dir, String name) {
+                        return name.startsWith("sdcard");
+                    }
+                });
+                Arrays.sort(files, new Comparator<File>() {
+                    @Override
+                    public int compare(File o1, File o2) {
+                        return o1.getName().compareTo(o2.getName());
+                    }
+                });
+                for (File f : files) {
+                    try {
+                        new File(f, "ss.doc").createNewFile();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println(f.getAbsolutePath());
+                }
+                break;
+        }
+    }
+
+    public void showInstalledAppDetails(String packageName) {
+        final int apiLevel = Build.VERSION.SDK_INT;
+        Intent intent = new Intent();
+
+        if (apiLevel >= 9) {
+            intent.setAction(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            intent.setData(Uri.parse("package:" + packageName));
+        } else {
+            final String appPkgName = (apiLevel == 8 ? "pkg" : "com.android.settings.ApplicationPkgName");
+
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.setClassName("com.android.settings", "com.android.settings.InstalledAppDetails");
+            intent.putExtra(appPkgName, packageName);
+        }
+
+        // Start Activity
+        startActivity(intent);
+    }
+
 
     @Override
     protected void onNewIntent(Intent intent) {
