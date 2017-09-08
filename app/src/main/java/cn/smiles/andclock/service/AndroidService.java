@@ -10,9 +10,12 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -44,6 +47,7 @@ public class AndroidService extends Service {
     private int screenWidth;
     private MyIAIDL myAidl;
     private MyServiceConnection myConn;
+    private Handler mhandler;
 
     public AndroidService() {
     }
@@ -55,6 +59,7 @@ public class AndroidService extends Service {
         asp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         windowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
         getScreenHeight();
+        mhandler = new Handler();
         myAidl = new MyIAIDL();
         if (myConn == null)
             myConn = new MyServiceConnection();
@@ -193,6 +198,8 @@ public class AndroidService extends Service {
         wmParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         wmParams.format = PixelFormat.RGBA_8888;
         wmParams.windowAnimations = android.R.style.Animation_InputMethod;
+
+        view.findViewById(R.id.go_home).setOnLongClickListener(longClickListener);
         view.findViewById(R.id.go_home).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -203,7 +210,8 @@ public class AndroidService extends Service {
                 closeContentWindow(view);
             }
         });
-        view.findViewById(R.id.go_home).setOnLongClickListener(longClickListener);
+
+        view.findViewById(R.id.recent_app).setOnLongClickListener(longClickListener);
         view.findViewById(R.id.recent_app).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -222,7 +230,8 @@ public class AndroidService extends Service {
                 closeContentWindow(view);
             }
         });
-        view.findViewById(R.id.recent_app).setOnLongClickListener(longClickListener);
+
+        view.findViewById(R.id.go_back).setOnLongClickListener(longClickListener);
         view.findViewById(R.id.go_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -230,7 +239,9 @@ public class AndroidService extends Service {
                 closeContentWindow(view);
             }
         });
-        view.findViewById(R.id.go_back).setOnLongClickListener(longClickListener);
+
+
+        view.findViewById(R.id.open_notification).setOnLongClickListener(longClickListener);
         view.findViewById(R.id.open_notification).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -238,7 +249,8 @@ public class AndroidService extends Service {
                 closeContentWindow(view);
             }
         });
-        view.findViewById(R.id.open_notification).setOnLongClickListener(longClickListener);
+
+        view.findViewById(R.id.power_off).setOnLongClickListener(longClickListener);
         view.findViewById(R.id.power_off).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -246,8 +258,9 @@ public class AndroidService extends Service {
                 closeContentWindow(view);
             }
         });
-        view.findViewById(R.id.power_off).setOnLongClickListener(longClickListener);
-        view.findViewById(R.id.open_android_setting).setOnClickListener(new View.OnClickListener() {
+
+        view.findViewById(R.id.open_app_setting).setOnLongClickListener(longClickListener);
+        view.findViewById(R.id.open_app_setting).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), GoHomeActivity.class);
@@ -257,6 +270,36 @@ public class AndroidService extends Service {
                 closeContentWindow(view);
             }
         });
+
+        view.findViewById(R.id.sys_menu).setOnLongClickListener(longClickListener);
+        view.findViewById(R.id.sys_menu).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Injector.unlockDevice();
+                closeContentWindow(view);
+            }
+        });
+
+        view.findViewById(R.id.sys_settings).setOnLongClickListener(longClickListener);
+        view.findViewById(R.id.sys_settings).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Settings.ACTION_SETTINGS);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getApplicationContext().startActivity(intent);
+                closeContentWindow(view);
+            }
+        });
+
+        view.findViewById(R.id.screen_capture).setOnLongClickListener(longClickListener);
+        view.findViewById(R.id.screen_capture).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Injector.screenCapture();
+                closeContentWindow(view, true);
+            }
+        });
+
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -269,7 +312,9 @@ public class AndroidService extends Service {
     private View.OnLongClickListener longClickListener = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View v) {
-            Toast.makeText(AndroidService.this, v.getContentDescription(), Toast.LENGTH_SHORT).show();
+            CharSequence description = v.getContentDescription();
+            if (!TextUtils.isEmpty(description))
+                Toast.makeText(AndroidService.this, description, Toast.LENGTH_SHORT).show();
             return true;
         }
     };
@@ -279,9 +324,18 @@ public class AndroidService extends Service {
      *
      * @param view
      */
-    private void closeContentWindow(View view) {
+    private void closeContentWindow(View view, boolean... isDelayed) {
         windowManager.removeView(view);
-        openAndroidWindow();
+        if (isDelayed.length > 0) {
+            mhandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    openAndroidWindow();
+                }
+            }, 1200);
+        } else {
+            openAndroidWindow();
+        }
     }
 
     /**

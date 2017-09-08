@@ -89,6 +89,15 @@ public class Injector {
     }
 
     /**
+     * 屏幕截图
+     *
+     * @return
+     */
+    public static boolean screenCapture() {
+        return executeCommand("input keyevent 120");
+    }
+
+    /**
      * Runs given command in shell as superuser
      *
      * @param command Command to execute
