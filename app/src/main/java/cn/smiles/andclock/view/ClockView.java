@@ -6,13 +6,19 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class ClockView extends View {
 
     private Paint paint;
+    private SimpleDateFormat dateFormat;
 
     public ClockView(Context context) {
         this(context, null);
@@ -46,6 +52,17 @@ public class ClockView extends View {
                 postDelayed(this, 1000);
             }
         }, 1000 - second);
+
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String format = dateFormat.format(new Date());
+                Toast toast = Toast.makeText(getContext(), "当前：" + format, Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
+            }
+        });
     }
 
 
@@ -95,11 +112,15 @@ public class ClockView extends View {
 //        System.out.println("hour= " + hour + ",minute=" + minute + ",second=" + second);
         //时针
         paint.setStrokeWidth(8);
-        float[] hourps = calculatePoint(hour * 30, 100);
+        int h = hour * 30;
+        h += (int) (30f / 60 * minute);
+        float[] hourps = calculatePoint(h, 100);
         canvas.drawLines(hourps, paint);
         //分针
         paint.setStrokeWidth(6);
-        float[] minuteps = calculatePoint(minute * 6, 130);
+        int m = minute * 6;
+        m += (int) (5f / 60 * second);
+        float[] minuteps = calculatePoint(m, 130);
         canvas.drawLines(minuteps, paint);
         //秒针
         paint.setStrokeWidth(4);
