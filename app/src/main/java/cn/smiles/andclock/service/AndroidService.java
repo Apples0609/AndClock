@@ -33,6 +33,7 @@ import cn.smiles.andclock.GoHomeActivity;
 import cn.smiles.andclock.R;
 import cn.smiles.andclock.aidl.IMyAidlInterface;
 import cn.smiles.andclock.tools.Injector;
+import cn.smiles.andclock.view.MyLinearLayout;
 
 public class AndroidService extends Service {
 
@@ -195,7 +196,7 @@ public class AndroidService extends Service {
         final View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.tools_view_layout, null);
         final WindowManager.LayoutParams wmParams = new WindowManager.LayoutParams(-1, -1);
         wmParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
-        wmParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        wmParams.flags = WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         wmParams.format = PixelFormat.RGBA_8888;
         wmParams.windowAnimations = android.R.style.Animation_InputMethod;
 
@@ -304,6 +305,12 @@ public class AndroidService extends Service {
             @Override
             public void onClick(View v) {
                 closeContentWindow(view);
+            }
+        });
+        ((MyLinearLayout) view).setKeyEventListener(new MyLinearLayout.KeyDownViewListener() {
+            @Override
+            public void keyEvent() {
+                closeContentWindow(view, true);
             }
         });
         windowManager.addView(view, wmParams);
