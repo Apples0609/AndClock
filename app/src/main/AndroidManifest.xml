@@ -16,7 +16,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
-
             <!--
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -56,6 +55,14 @@
             android:exported="true"
             android:process=":RemoteSer">
         </service>
+
+        <activity android:name=".ConstraintLayoutActivity">
+            <!--            <intent-filter>
+                            <action android:name="android.intent.action.MAIN"/>
+
+                            <category android:name="android.intent.category.LAUNCHER"/>
+                        </intent-filter>-->
+        </activity>
     </application>
 
 </manifest>
