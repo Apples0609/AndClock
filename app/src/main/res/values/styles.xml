@@ -9,4 +9,8 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="NoActionbar" parent="AppTheme">
+        <item name="android:windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 </resources>

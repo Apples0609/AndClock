@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">AndClock</string>
     <string name="app_name2">Android</string>
+
+
+    <string name="action_shuaxin">刷新</string>
+    <string name="action_zhuru">注入</string>
 </resources>
