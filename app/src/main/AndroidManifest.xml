@@ -17,15 +17,12 @@
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
         </activity>
+        <!-- 主页 -->
         <activity
             android:name=".GoHomeActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleTask">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
 
         <service
@@ -54,7 +51,13 @@
         <activity
             android:name=".WebViewActivity"
             android:theme="@style/NoActionbar">
+        </activity>
+        <activity android:name=".CalendarActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
 
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
     </application>
 
