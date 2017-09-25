@@ -16,6 +16,12 @@ import cn.smiles.andclock.entity.MMonth;
 import cn.smiles.andclock.tools.CalendarTools;
 import cn.smiles.andclock.view.MGridView;
 
+/**
+ * 日历list列表适配器
+ *
+ * @author kaifang
+ * @date 2017/9/25 14:33
+ */
 public class MListAdapter extends BaseAdapter {
 
     private final List<MMonth> threeYeah;
@@ -23,10 +29,10 @@ public class MListAdapter extends BaseAdapter {
     private final Context context;
     private final CalendarTools calendarTools;
 
-    public MListAdapter(Context context, List<MMonth> threeYeah, CalendarTools calendarTools) {
+    public MListAdapter(Context context, CalendarTools calendarTools) {
         inflater = LayoutInflater.from(context);
         this.context = context;
-        this.threeYeah = threeYeah;
+        this.threeYeah = calendarTools.getMcalendars();
         this.calendarTools = calendarTools;
     }
 
@@ -60,6 +66,7 @@ public class MListAdapter extends BaseAdapter {
         MGridAdapter gridAdapter = new MGridAdapter(context, month.dates, calendarTools);
         viewHolder.gvGridView.setAdapter(gridAdapter);
         viewHolder.gvGridView.setOnItemClickListener(gridAdapter);
+        month.adapter = gridAdapter;
         return convertView;
     }
 

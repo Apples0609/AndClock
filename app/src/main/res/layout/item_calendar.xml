@@ -12,6 +12,6 @@
         android:gravity="center"
         android:padding="8dp"
         android:text="TextView"
-        android:textColor="@color/black"
+        android:textColor="@color/color_selector_text"
         android:textSize="14sp"/>
 </FrameLayout>

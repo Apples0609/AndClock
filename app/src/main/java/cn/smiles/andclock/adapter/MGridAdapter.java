@@ -13,16 +13,23 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.smiles.andclock.R;
+import cn.smiles.andclock.entity.MDate;
 import cn.smiles.andclock.entity.MMonth;
 import cn.smiles.andclock.tools.CalendarTools;
 
+/**
+ * 日历月份item 适配器
+ *
+ * @author kaifang
+ * @date 2017/9/25 14:33
+ */
 public class MGridAdapter extends BaseAdapter implements AdapterView.OnItemClickListener {
 
     private final LayoutInflater inflater;
-    private final List<MMonth.MDate> month;
+    private final List<MDate> month;
     private final CalendarTools calendarTools;
 
-    public MGridAdapter(Context context, List<MMonth.MDate> month, CalendarTools calendarTools) {
+    public MGridAdapter(Context context, List<MDate> month, CalendarTools calendarTools) {
         inflater = LayoutInflater.from(context);
         this.month = month;
         this.calendarTools = calendarTools;
@@ -34,7 +41,7 @@ public class MGridAdapter extends BaseAdapter implements AdapterView.OnItemClick
     }
 
     @Override
-    public MMonth.MDate getItem(int position) {
+    public MDate getItem(int position) {
         return month.get(position);
     }
 
@@ -53,16 +60,13 @@ public class MGridAdapter extends BaseAdapter implements AdapterView.OnItemClick
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        MMonth.MDate mDate = getItem(position);
+        MDate mDate = getItem(position);
         if (mDate.date == null) {
+            viewHolder.tvDay.setActivated(false);
             viewHolder.tvDay.setText(null);
             viewHolder.tvDay.setSelected(false);
         } else {
-            if (mDate.isToday) {
-                viewHolder.tvDay.setEnabled(false);
-            } else {
-                viewHolder.tvDay.setEnabled(true);
-            }
+            viewHolder.tvDay.setActivated(mDate.isToday);
             viewHolder.tvDay.setText(String.valueOf(mDate.day));
             viewHolder.tvDay.setSelected(mDate.isChecked);
         }
@@ -71,10 +75,33 @@ public class MGridAdapter extends BaseAdapter implements AdapterView.OnItemClick
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        MMonth.MDate mDate = getItem(position);
+        MDate mDate = getItem(position);
         if (mDate.date != null) {
-            mDate.isChecked = !mDate.isChecked;
-            notifyDataSetChanged();
+            calendarTools.setCheck_date(mDate);
+            MDate start_date = calendarTools.getCheck_start_date();
+            MDate end_date = calendarTools.getCheck_end_date();
+            List<MMonth> mcalendars = calendarTools.getMcalendars();
+            int checked_sum = 0;
+            for (MMonth mcalendar : mcalendars) {
+                if (mcalendar.adapter != null) {
+                    for (MDate date : mcalendar.dates) {
+                        if (date.date == null) continue;
+                        if (start_date == null && end_date == null) {
+                            date.isChecked = false;
+                        } else {
+                            if (start_date != null && end_date != null) {
+                                date.isChecked = date.date.getTime() >= start_date.date.getTime()
+                                        && date.date.getTime() <= end_date.date.getTime();
+                            } else {
+                                date.isChecked = date == mDate;
+                            }
+                        }
+                        if (date.isChecked) checked_sum++;
+                        mcalendar.adapter.notifyDataSetChanged();
+                    }
+                }
+            }
+            if (calendarTools.listener != null) calendarTools.listener.onOperator(checked_sum);
         }
     }
 

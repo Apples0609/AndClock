@@ -1,12 +1,20 @@
 package cn.smiles.andclock.entity;
 
-import java.util.Date;
+import android.widget.BaseAdapter;
+
 import java.util.List;
 
+/**
+ * 日历 日实体类
+ *
+ * @author kaifang
+ * @date 2017/9/25 14:34
+ */
 public class MMonth {
     public int yeah;
     public int month;
     public List<MDate> dates;
+    public BaseAdapter adapter;
 
     public MMonth() {
     }
@@ -17,19 +25,4 @@ public class MMonth {
         this.dates = dates;
     }
 
-    public static class MDate {
-        public boolean isChecked;
-        public int day;
-        public Date date;
-        public boolean isToday;
-
-        public MDate(Date date) {
-            this.date = date;
-        }
-
-        public MDate(int day, Date date) {
-            this.day = day;
-            this.date = date;
-        }
-    }
 }
