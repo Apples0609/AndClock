@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- MGridView 是否在 ListView 嵌套 -->
+    <declare-styleable name="MGridView">
+        <attr name="inList" format="boolean"/>
+    </declare-styleable>
+
+</resources>
