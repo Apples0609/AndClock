@@ -86,6 +86,7 @@ public class AndroidService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        if (intent == null) return START_STICKY;
         boolean isChecked = intent.getBooleanExtra("isChecked", true);
         boolean b = wmContentView == null;
         if (isChecked == !b)
