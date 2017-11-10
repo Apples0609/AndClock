@@ -54,7 +54,7 @@ public class MListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
-        if (convertView == null) {
+        if (convertView == null) {//增加农历显示
             convertView = inflater.inflate(R.layout.item_calendar_gridview, parent, false);
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
@@ -63,9 +63,10 @@ public class MListAdapter extends BaseAdapter {
         }
         MMonth month = getItem(position);
         viewHolder.tvYeahMonth.setText(month.yeah + "年" + month.month + "月");
-        MGridAdapter gridAdapter = new MGridAdapter(context, month.dates, calendarTools);
+        MGridAdapter gridAdapter = new MGridAdapter(context, month, calendarTools);
         viewHolder.gvGridView.setAdapter(gridAdapter);
         viewHolder.gvGridView.setOnItemClickListener(gridAdapter);
+        viewHolder.gvGridView.setOnItemLongClickListener(gridAdapter);
         month.adapter = gridAdapter;
         return convertView;
     }

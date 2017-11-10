@@ -7,6 +7,8 @@ public class MDate {
     public Date date;
     public boolean isToday;
     public boolean isChecked;
+    public String nongli;
+    public String dateInfo;
 
     public MDate(Date date) {
         this.date = date;

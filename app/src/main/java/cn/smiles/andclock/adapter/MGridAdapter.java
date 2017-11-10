@@ -1,12 +1,14 @@
 package cn.smiles.andclock.adapter;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -23,26 +25,28 @@ import cn.smiles.andclock.tools.CalendarTools;
  * @author kaifang
  * @date 2017/9/25 14:33
  */
-public class MGridAdapter extends BaseAdapter implements AdapterView.OnItemClickListener {
+public class MGridAdapter extends BaseAdapter implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
     private final LayoutInflater inflater;
-    private final List<MDate> month;
     private final CalendarTools calendarTools;
+    private final MMonth month;
+    private final Context context;
 
-    public MGridAdapter(Context context, List<MDate> month, CalendarTools calendarTools) {
+    public MGridAdapter(Context context, MMonth month, CalendarTools calendarTools) {
+        this.context = context;
         inflater = LayoutInflater.from(context);
-        this.month = month;
         this.calendarTools = calendarTools;
+        this.month = month;
     }
 
     @Override
     public int getCount() {
-        return month.size();
+        return month.dates.size();
     }
 
     @Override
     public MDate getItem(int position) {
-        return month.get(position);
+        return month.dates.get(position);
     }
 
     @Override
@@ -62,14 +66,14 @@ public class MGridAdapter extends BaseAdapter implements AdapterView.OnItemClick
         }
         MDate mDate = getItem(position);
         if (mDate.date == null) {
-            viewHolder.tvDay.setActivated(false);
             viewHolder.tvDay.setText(null);
-            viewHolder.tvDay.setSelected(false);
+            viewHolder.tvNongli.setText(null);
         } else {
-            viewHolder.tvDay.setActivated(mDate.isToday);
             viewHolder.tvDay.setText(String.valueOf(mDate.day));
-            viewHolder.tvDay.setSelected(mDate.isChecked);
+            viewHolder.tvNongli.setText(mDate.nongli);
         }
+        viewHolder.tvDay.setActivated(mDate.isToday);
+        convertView.setEnabled(!mDate.isChecked);
         return convertView;
     }
 
@@ -105,9 +109,20 @@ public class MGridAdapter extends BaseAdapter implements AdapterView.OnItemClick
         }
     }
 
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        MDate mDate = getItem(position);
+        Toast toast = Toast.makeText(context, mDate.dateInfo, Toast.LENGTH_LONG);
+        ((TextView) toast.getView().findViewById(android.R.id.message)).setGravity(Gravity.CENTER_HORIZONTAL);
+        toast.show();
+        return true;
+    }
+
     class ViewHolder {
         @BindView(R.id.tv_day)
         TextView tvDay;
+        @BindView(R.id.tv_day_nongli)
+        TextView tvNongli;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

@@ -1,14 +1,10 @@
-package cn.smiles.andclock;
+package cn.smiles.andclock.tools;
 
-import org.junit.Test;
-
-import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Locale;
 
 public class Lunar {
-    private long[] lunarInfo = new long[]{0x04bd8, 0x04ae0,
+    private static long[] lunarInfo = new long[]{0x04bd8, 0x04ae0,
             0x0a570, 0x054d5, 0x0d260, 0x0d950, 0x16554, 0x056a0, 0x09ad0,
             0x055d2, 0x04ae0, 0x0a5b6, 0x0a4d0, 0x0d250, 0x1d255, 0x0b540,
             0x0d6a0, 0x0ada2, 0x095b0, 0x14977, 0x04970, 0x0a4b0, 0x0b4b5,
@@ -31,33 +27,32 @@ public class Lunar {
             0x0a4d0, 0x1d0b6, 0x0d250, 0x0d520, 0x0dd45, 0x0b5a0, 0x056d0,
             0x055b2, 0x049b0, 0x0a577, 0x0a4b0, 0x0aa50, 0x1b255, 0x06d20,
             0x0ada0};
-    private int[] year20 = new int[]{1, 4, 1, 2, 1, 2, 1, 1, 2,
+    private static int[] year20 = new int[]{1, 4, 1, 2, 1, 2, 1, 1, 2,
             1, 2, 1};
-    private int[] year19 = new int[]{0, 3, 0, 1, 0, 1, 0, 0, 1,
+    private static int[] year19 = new int[]{0, 3, 0, 1, 0, 1, 0, 0, 1,
             0, 1, 0};
-    private int[] year2000 = new int[]{0, 3, 1, 2, 1, 2, 1, 1,
+    private static int[] year2000 = new int[]{0, 3, 1, 2, 1, 2, 1, 1,
             2, 1, 2, 1};
-    private String[] nMonth = new String[]{"", "正", "二", "三", "四",
-            "五", "六", "七", "八", "九", "十", "冬月", "腊月"};
-    private String[] tianGan = new String[]{"甲", "乙", "丙", "丁", "戊",
+    private static String[] nMonth = new String[]{"", "正", "二", "三", "四",
+            "五", "六", "七", "八", "九", "十", "冬", "腊"};
+    private static String[] tianGan = new String[]{"甲", "乙", "丙", "丁", "戊",
             "己", "庚", "辛", "壬", "癸"};
-    private String[] diZhi = new String[]{"子", "丑", "寅", "卯", "辰",
+    private static String[] diZhi = new String[]{"子", "丑", "寅", "卯", "辰",
             "巳", "午", "未", "申", "酉", "戌", "亥"};
-    private String[] animals = new String[]{"鼠", "牛", "虎", "兔",
+    private static String[] animals = new String[]{"鼠", "牛", "虎", "兔",
             "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪"};
 
-    private String[] solarTerm = new String[]{"小寒", "大寒", "立春",
+    private static String[] solarTerm = new String[]{"小寒", "大寒", "立春",
             "雨水", "惊蛰", "春分", "清明", "谷雨", "立夏", "小满", "芒种", "夏至", "小暑", "大暑",
             "立秋", "处暑", "白露", "秋分", "寒露", "霜降", "立冬", "小雪", "大雪", "冬至"};
-    private String[] sFtv = new String[]{"0101*元旦", "0214 情人节",
+    private static String[] sFtv = new String[]{"0101 元旦", "0214 情人节",
             "0308 妇女节", "0312 植树节", "0315 消费者权益日", "0401 愚人节", "0501 劳动节",
             "0504 青年节", "0512 护士节", "0601 儿童节", "0701 建党节", "0801 建军节",
-            "0808 父亲节", "0909 mzd逝世纪念", "0910 教师节", "0928 孔子诞辰", "1001*国庆节",
-            "1006 老人节", "1024 联合国日", "1112 孙中山诞辰", "1220 澳门回归", "1225 圣诞节",
-            "1226 mzd诞辰"};
-    private String[] lFtv = new String[]{"0101*农历春节",
+            "0808 父亲节", "0910 教师节", "0928 孔子诞辰", "1001 国庆节",
+            "1006 老人节", "1024 联合国日", "1112 孙中山诞辰", "1220 澳门回归", "1225 圣诞节"};
+    private static String[] lFtv = new String[]{"0101 农历春节",
             "0115 元宵节", "0505 端午节", "0707 七夕情人节", "0815 中秋节", "0909 重阳节",
-            "1208 腊八节", "1224 小年", "0100*除夕"};
+            "1208 腊八节", "1224 小年", "0100 除夕"};
 
     /**
      * 传回农历 y年的总天数
@@ -65,7 +60,7 @@ public class Lunar {
      * @param y
      * @return
      */
-    private int lYearDays(int y) {
+    private static int lYearDays(int y) {
         int i, sum = 348;
         for (i = 0x8000; i > 0x8; i >>= 1) {
             if ((lunarInfo[y - 1900] & i) != 0)
@@ -80,7 +75,7 @@ public class Lunar {
      * @param y
      * @return
      */
-    private int leapDays(int y) {
+    private static int leapDays(int y) {
         if (leapMonth(y) != 0) {
             if ((lunarInfo[y - 1900] & 0x10000) != 0)
                 return 30;
@@ -96,7 +91,7 @@ public class Lunar {
      * @param y
      * @return
      */
-    private int leapMonth(int y) {
+    private static int leapMonth(int y) {
         return (int) (lunarInfo[y - 1900] & 0xf);
     }
 
@@ -107,7 +102,7 @@ public class Lunar {
      * @param m
      * @return
      */
-    private int monthDays(int y, int m) {
+    private static int monthDays(int y, int m) {
         if ((lunarInfo[y - 1900] & (0x10000 >> m)) == 0)
             return 29;
         else
@@ -120,7 +115,7 @@ public class Lunar {
      * @param y
      * @return
      */
-    private String animalsYear(int y) {
+    private static String animalsYear(int y) {
         return animals[(y - 4) % 12];
     }
 
@@ -130,7 +125,7 @@ public class Lunar {
      * @param num
      * @return
      */
-    private String cyclicalm(int num) {
+    private static String cyclicalm(int num) {
         return (tianGan[num % 10] + diZhi[num % 12]);
     }
 
@@ -140,7 +135,7 @@ public class Lunar {
      * @param y
      * @return
      */
-    private String cyclical(int y) {
+    private static String cyclical(int y) {
         int num = y - 1900 + 36;
         return cyclicalm(num);
     }
@@ -152,7 +147,7 @@ public class Lunar {
      * @param m
      * @return
      */
-    private long[] lunar(int y, int m) {
+    private static long[] lunar(int y, int m) {
         long[] nongDate = new long[7];
         int i = 0, temp = 0, leap = 0;
         Date baseDate = new GregorianCalendar(1900 + 1900, 1, 31).getTime();
@@ -223,7 +218,7 @@ public class Lunar {
      * @param d
      * @return
      */
-    private long[] calElement(int y, int m, int d) {
+    private static long[] calElement(int y, int m, int d) {
         long[] nongDate = new long[7];
         int i = 0, temp = 0, leap = 0;
         Date baseDate = new GregorianCalendar(0 + 1900, 0, 31).getTime();
@@ -280,7 +275,7 @@ public class Lunar {
         return nongDate;
     }
 
-    private String getChinaDate(int day) {
+    private static String getChinaDate(int day) {
         String a = "";
         if (day == 10)
             return "初十";
@@ -330,38 +325,19 @@ public class Lunar {
         return a;
     }
 
-    private String today() {
-        Calendar today = Calendar.getInstance(Locale.SIMPLIFIED_CHINESE);
-        today.set(Calendar.YEAR, 2017);
-        today.set(Calendar.MONTH, 10);
-        today.set(Calendar.DATE, 9);
-        int year = today.get(Calendar.YEAR);
-        int month = today.get(Calendar.MONTH) + 1;
-        int date = today.get(Calendar.DATE);
-        System.out.println(year + "-" + month + "-" + date);
-
+    public static String nongliToday(int year, int month, int date) {
         long[] l = calElement(year, month, date);
-        StringBuffer sToday = new StringBuffer();
-        try {
-            sToday.append(" 农历");
-            sToday.append(cyclical(year));
-            sToday.append('(');
-            sToday.append(animalsYear(year));
-            sToday.append(")年");
-            sToday.append(nMonth[(int) l[1]]);
-            sToday.append("月");
-            sToday.append(getChinaDate((int) (l[2])));
-            return sToday.toString();
-        } finally {
-            sToday = null;
-        }
+        return " 农历" +
+                cyclical(year) +
+                '(' +
+                animalsYear(year) +
+                ")年" +
+                nMonth[(int) l[1]] +
+                "月" +
+                getChinaDate((int) (l[2]));
     }
 
-    /**
-     * 农历日历工具使用演示
-     */
-    @Test
-    public void main() {
-        System.out.println(today());
+    public static String nongli(int y, int m, int d) {
+        return getChinaDate((int) (calElement(y, m, d)[2]));
     }
 }
