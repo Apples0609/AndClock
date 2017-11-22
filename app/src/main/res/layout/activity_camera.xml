@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.supoin.hardtest.activities.CameraActivity">
+
+    <SurfaceView
+        android:id="@+id/surface_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/count_down"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="80sp"/>
+
+        <Button
+            android:id="@+id/btnSavePhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_weight="1"
+            android:text="存图拍"/>
+
+        <Button
+            android:id="@+id/btnStopPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="1"
+            android:text="停止"/>
+
+        <Button
+            android:id="@+id/btnNoSavePhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="23dp"
+            android:layout_marginRight="23dp"
+            android:layout_weight="1"
+            android:text="仅拍照"/>
+
+
+        <TextView
+            android:id="@+id/tvPhotoNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btnStopPhoto"
+            android:layout_alignEnd="@+id/btnStopPhoto"
+            android:layout_alignLeft="@+id/btnStopPhoto"
+            android:layout_alignRight="@+id/btnStopPhoto"
+            android:layout_alignStart="@+id/btnStopPhoto"
+            android:layout_alignTop="@+id/tvNumberTitle"
+            android:background="#cac8c8"
+            android:text="10000"
+            android:textColor="#000"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/tvNumberTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btnSavePhoto"
+            android:layout_alignEnd="@+id/btnSavePhoto"
+            android:layout_alignLeft="@+id/btnSavePhoto"
+            android:layout_alignRight="@+id/btnSavePhoto"
+            android:layout_alignStart="@+id/btnSavePhoto"
+            android:background="#b9b6b6"
+            android:text="  数量:"
+            android:textColor="#000"
+            android:textSize="18sp"/>
+
+        <Button
+            android:id="@+id/btnDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btnNoSavePhoto"
+            android:layout_alignLeft="@+id/btnNoSavePhoto"
+            android:layout_alignStart="@+id/btnNoSavePhoto"
+            android:text="删除"/>
+
+    </RelativeLayout>
+
+
+</FrameLayout>
