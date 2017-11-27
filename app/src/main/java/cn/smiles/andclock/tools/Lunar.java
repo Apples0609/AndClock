@@ -325,19 +325,14 @@ public class Lunar {
         return a;
     }
 
-    public static String nongliToday(int year, int month, int date) {
+    public static String[] nongli(int year, int month, int date) {
         long[] l = calElement(year, month, date);
-        return " 农历" +
-                cyclical(year) +
-                '(' +
-                animalsYear(year) +
-                ")年" +
-                nMonth[(int) l[1]] +
-                "月" +
-                getChinaDate((int) (l[2]));
-    }
-
-    public static String nongli(int y, int m, int d) {
-        return getChinaDate((int) (calElement(y, m, d)[2]));
+        String nmonth = nMonth[(int) l[1]];
+        String ndate = getChinaDate((int) (l[2]));
+        String ndate1 = ndate;
+        if ("初一".equals(ndate1))
+            ndate1 = nmonth + "月";
+        return new String[]{" 农历" + cyclical(year) + '(' + animalsYear(year) + ")年" + nmonth + "月" + ndate,
+                ndate1};
     }
 }

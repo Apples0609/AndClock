@@ -29,7 +29,7 @@ public class CalendarActivity extends AppCompatActivity implements CalendarTools
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
         ButterKnife.bind(this);
-        calendarTools = new CalendarTools();
+        calendarTools = new CalendarTools(5);
         calendarTools.listener = this;
         MListAdapter listAdapter = new MListAdapter(this, calendarTools);
         lvListView.setAdapter(listAdapter);

@@ -120,8 +120,9 @@ public class CalendarTools {
                     && tmonth == cmonth
                     && tday == cday)
                 mDate.isToday = true;
-            mDate.nongli = Lunar.nongli(cyeah, cmonth, cday);
-            String nongliT = Lunar.nongliToday(cyeah, cmonth, cday);
+            String[] nongli = Lunar.nongli(cyeah, cmonth, cday);
+            mDate.nongli = nongli[1];
+            String nongliT = nongli[0];
             mDate.dateInfo = String.format(Locale.getDefault(), "%d年%d月%d日\n%s", cyeah, cmonth, cday, nongliT);
             mdays.add(mDate);
             calendar.add(Calendar.DATE, 1);
