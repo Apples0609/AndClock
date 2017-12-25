@@ -1,4 +1,4 @@
-package cn.smiles.andclock;
+package cn.smiles.andclock.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+
+import cn.smiles.andclock.R;
 
 public class MainActivity extends AppCompatActivity {
 

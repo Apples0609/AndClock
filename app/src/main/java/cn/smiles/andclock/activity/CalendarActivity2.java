@@ -1,4 +1,4 @@
-package cn.smiles.andclock;
+package cn.smiles.andclock.activity;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -16,6 +16,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.smiles.andclock.R;
 import cn.smiles.andclock.adapter.MGridAdapter;
 import cn.smiles.andclock.entity.MMonth;
 import cn.smiles.andclock.tools.CalendarTools;

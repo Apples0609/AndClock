@@ -1,4 +1,4 @@
-package cn.smiles.andclock;
+package cn.smiles.andclock.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +8,7 @@ import android.widget.ListView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.smiles.andclock.R;
 import cn.smiles.andclock.adapter.MListAdapter;
 import cn.smiles.andclock.tools.CalendarTools;
 

@@ -1,4 +1,4 @@
-package cn.smiles.andclock;
+package cn.smiles.andclock.activity;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import cn.smiles.andclock.R;
 import cn.smiles.andclock.service.AndroidService;
 import cn.smiles.andclock.service.RemoteService;
 

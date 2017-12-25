@@ -1,4 +1,4 @@
-package cn.smiles.andclock;
+package cn.smiles.andclock.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +13,7 @@ import android.webkit.WebViewClient;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.smiles.andclock.R;
 
 public class WebViewActivity extends AppCompatActivity implements Toolbar.OnMenuItemClickListener, View.OnClickListener {
 

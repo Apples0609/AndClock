@@ -1,4 +1,4 @@
-package cn.smiles.andclock;
+package cn.smiles.andclock.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +8,8 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import cn.smiles.andclock.R;
 
 public class ConstraintLayoutActivity extends AppCompatActivity {
 

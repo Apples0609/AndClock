@@ -29,7 +29,7 @@ import android.widget.Toast;
 
 import java.lang.reflect.Method;
 
-import cn.smiles.andclock.GoHomeActivity;
+import cn.smiles.andclock.activity.GoHomeActivity;
 import cn.smiles.andclock.R;
 import cn.smiles.andclock.aidl.IMyAidlInterface;
 import cn.smiles.andclock.tools.Injector;

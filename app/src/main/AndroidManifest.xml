@@ -23,11 +23,11 @@
         android:roundIcon="@drawable/ic_android_pink_logo_48dp"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".activity.MainActivity">
         </activity>
         <!-- 主页 -->
         <activity
-            android:name=".GoHomeActivity"
+            android:name=".activity.GoHomeActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleTask">
 
@@ -54,20 +54,20 @@
             android:process=":RemoteSer">
         </service>
 
-        <activity android:name=".ConstraintLayoutActivity">
+        <activity android:name=".activity.ConstraintLayoutActivity">
         </activity>
         <activity
-            android:name=".WebViewActivity"
+            android:name=".activity.WebViewActivity"
             android:theme="@style/NoActionbar">
         </activity>
-        <activity android:name=".CalendarActivity">
+        <activity android:name=".activity.CalendarActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".CalendarActivity2">
+        <activity android:name=".activity.CalendarActivity2">
 
         </activity>
         <activity
