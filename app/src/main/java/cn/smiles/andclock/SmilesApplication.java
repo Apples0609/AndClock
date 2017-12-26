@@ -2,6 +2,7 @@ package cn.smiles.andclock;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.widget.Toast;
@@ -10,11 +11,13 @@ import android.widget.Toast;
 public class SmilesApplication extends Application {
 
     public static Context appContext;
+    public static Handler handler;
 
     @Override
     public void onCreate() {
         super.onCreate();
         appContext = this.getApplicationContext();
+        handler = new Handler();
     }
 
     public static void showToast(String m) {

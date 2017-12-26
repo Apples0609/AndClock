@@ -30,7 +30,6 @@
             android:name=".activity.GoHomeActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleTask">
-
         </activity>
 
         <service
@@ -68,11 +67,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.CalendarActivity2">
-
         </activity>
         <activity
             android:name=".activity.CameraActivity"
             android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".activity.ViewPagerActivity">
 
         </activity>
     </application>
