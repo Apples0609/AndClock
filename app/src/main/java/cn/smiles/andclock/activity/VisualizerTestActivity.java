@@ -3,8 +3,11 @@ package cn.smiles.andclock.activity;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.audiofx.Visualizer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
+import java.io.File;
 
 import cn.smiles.andclock.R;
 import cn.smiles.andclock.view.VisualizerView;
@@ -37,7 +40,7 @@ public class VisualizerTestActivity extends AppCompatActivity {
 
     private void initAudio() {
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
-        mMediaPlayer = MediaPlayer.create(this, R.raw.test);
+        mMediaPlayer = MediaPlayer.create(this, Uri.fromFile(new File("/storage/sdcard1/Music/彭丽媛 - 毛主席的话儿记心上.mp3")));
 
         // When the stream ends, we don't need to collect any more data. We
         // don't do this in
@@ -65,8 +68,7 @@ public class VisualizerTestActivity extends AppCompatActivity {
         mVisualizer.setCaptureSize(Visualizer.getCaptureSizeRange()[1]);
         mVisualizer.setDataCaptureListener(
                 new Visualizer.OnDataCaptureListener() {
-                    public void onWaveFormDataCapture(Visualizer visualizer,
-                                                      byte[] bytes, int samplingRate) {
+                    public void onWaveFormDataCapture(Visualizer visualizer, byte[] bytes, int samplingRate) {
                         mVisualizerView.updateVisualizer(bytes);
                     }
 
