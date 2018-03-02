@@ -3,6 +3,14 @@
     <string name="app_name2">Android</string>
 
 
+    <string name="action_google">Google</string>
     <string name="action_shuaxin">刷新</string>
     <string name="action_zhuru">注入</string>
+
+    <string name="lottery_date">开奖日期　　：%s</string>
+    <string name="award_deadline">兑奖截止日期：%s</string>
+    <string name="periods">第 %s 期</string>
+    <string name="sales_quantity">本期销量：%s元（%s注）</string>
+    <string name="jackpot">奖池滚存：%s元</string>
+    <string name="front_result">上一期</string>
 </resources>

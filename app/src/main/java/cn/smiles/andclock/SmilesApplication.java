@@ -7,6 +7,8 @@ import android.os.Looper;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+
 
 public class SmilesApplication extends Application {
 
@@ -18,6 +20,7 @@ public class SmilesApplication extends Application {
         super.onCreate();
         appContext = this.getApplicationContext();
         handler = new Handler();
+        Fresco.initialize(this);
     }
 
     public static void showToast(String m) {

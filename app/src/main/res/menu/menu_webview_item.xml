@@ -2,6 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/action_google"
+        android:icon="@drawable/ic_theaters_white_24dp"
+        android:orderInCategory="80"
+        android:title="@string/action_google"
+        app:showAsAction="ifRoom"/>
+
+    <item
         android:id="@+id/action_shuaxin"
         android:icon="@drawable/ic_refresh_white_24dp"
         android:orderInCategory="80"

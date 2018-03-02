@@ -81,6 +81,16 @@ public class MainActivity extends AppCompatActivity {
         am.abandonAudioFocus(focusChangeListener);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (player != null && player.isPlaying()) {
+            player.stop();
+            player.release();
+            player = null;
+        }
+    }
+
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button:

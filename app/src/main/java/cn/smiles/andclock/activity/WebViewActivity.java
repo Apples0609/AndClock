@@ -21,6 +21,7 @@ public class WebViewActivity extends AppCompatActivity implements Toolbar.OnMenu
     WebView wvWebview;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    private View pB2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,8 @@ public class WebViewActivity extends AppCompatActivity implements Toolbar.OnMenu
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         toolbar.setNavigationOnClickListener(this);
         toolbar.setOnMenuItemClickListener(this);
+
+        pB2 = findViewById(R.id.progressBar2);
 
         initData();
     }
@@ -55,9 +58,22 @@ public class WebViewActivity extends AppCompatActivity implements Toolbar.OnMenu
         settings.setPluginState(WebSettings.PluginState.ON);
         wvWebview.setWebViewClient(new WebViewClient() {
             // override all the methods
+            public void onPageFinished(WebView view, String url) {
+                // do your stuff here
+            }
         });
         wvWebview.setWebChromeClient(new WebChromeClient() {
             // override all the methods
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                if (newProgress == 0) {
+                    pB2.setVisibility(View.VISIBLE);
+                } else if (newProgress > 88) {
+                    pB2.setVisibility(View.GONE);
+                }
+                super.onProgressChanged(view, newProgress);
+            }
+
         });
         wvWebview.setFocusable(true);
         wvWebview.setFocusableInTouchMode(true);
@@ -81,6 +97,9 @@ public class WebViewActivity extends AppCompatActivity implements Toolbar.OnMenu
                 wvWebview.loadUrl("JavaScript:" + js);
 //                wvWebview.loadData("<script>alert('ahaha');</script>", "text/html", "UTF-8");
                 break;
+            case R.id.action_google:
+                wvWebview.loadUrl("https://www.google.com");
+                break;
         }
         return true;
     }
@@ -88,5 +107,35 @@ public class WebViewActivity extends AppCompatActivity implements Toolbar.OnMenu
     @Override
     public void onClick(View v) {
         finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (wvWebview.canGoBack()) {
+            wvWebview.goBack();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        wvWebview.onPause();
+        wvWebview.pauseTimers();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        wvWebview.resumeTimers();
+        wvWebview.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        wvWebview.destroy();
+        wvWebview = null;
+        super.onDestroy();
     }
 }

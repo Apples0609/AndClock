@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/myeah_select"
+        android:icon="@drawable/ic_access_time_white_24dp"
+        android:title="@string/front_result"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/mfront_result"
+        android:icon="@drawable/ic_file_upload_white_24dp"
+        android:title="@string/front_result"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/mback_result"
+        android:icon="@drawable/ic_file_download_white_24dp"
+        android:title="@string/front_result"
+        app:showAsAction="ifRoom"/>
+</menu>
