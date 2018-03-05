@@ -110,6 +110,11 @@ public class LotteryInfoActivity extends AppCompatActivity implements OnPhotoTap
         tvsBonus = new TextView[]{tvFirstBonus, tvSecondBonus, tvThirdBonus, tvFourthBonus, tvFifthBonus, tvSixBonus};
 
         runALottery("");
+//        Uri uri = new Uri.Builder()
+//                .scheme(UriUtil.LOCAL_RESOURCE_SCHEME) // "res"
+//                .path(String.valueOf(R.drawable.ssq_rule))
+//                .build();
+//        ImageRequest imageRequest = ImageRequestBuilder.newBuilderWithResourceId(R.drawable.ssq_rule).build();
         ivSsqRule.setImageResource(R.drawable.ssq_rule);
         ivSsqRule.setOnPhotoTapListener(this);
     }
@@ -140,7 +145,7 @@ public class LotteryInfoActivity extends AppCompatActivity implements OnPhotoTap
                                 tvLotteryDate.setText(getResources().getString(R.string.lottery_date, dateStr));
                                 Calendar calendar = Calendar.getInstance();
                                 calendar.setTime(date);
-                                calendar.add(Calendar.MONTH, 2);
+                                calendar.add(Calendar.DAY_OF_MONTH, 60);
                                 calendar.set(Calendar.HOUR_OF_DAY, 0);
                                 calendar.set(Calendar.MINUTE, 0);
                                 String dateStr2 = dateFormat2.format(calendar.getTime());

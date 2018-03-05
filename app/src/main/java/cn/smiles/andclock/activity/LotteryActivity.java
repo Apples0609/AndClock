@@ -130,6 +130,15 @@ public class LotteryActivity extends AppCompatActivity implements AdapterView.On
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         String lottery = lotteryStr.get(position);
+        if (!"双色球".equals(lottery)) {
+            new AlertDialog.Builder(this)
+                    .setCancelable(false)
+                    .setTitle("提示")
+                    .setMessage("只能查询‘双色球’！")
+                    .setPositiveButton("确定", null)
+                    .create().show();
+            return;
+        }
         Intent intent = new Intent(this, LotteryInfoActivity.class);
         intent.putExtra("lottery", lottery);
         startActivity(intent);
