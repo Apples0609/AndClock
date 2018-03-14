@@ -18,14 +18,6 @@ public class MapGenerator {
         paint.setAntiAlias(true);
     }
 
-    public MapWall firstWall() {
-        return map[0][0];
-    }
-
-    public MapWall lastWall() {
-        return map[row - 1][col - 1];
-    }
-
     private void init(int screenX, int screenY) {
         totalWall = row * col;
         int brickWidth = (int) (screenX * 0.8f) / col;

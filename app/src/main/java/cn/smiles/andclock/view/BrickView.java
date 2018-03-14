@@ -32,7 +32,9 @@ public class BrickView extends SurfaceView implements Runnable {
     private ArrayList<Star> stars = new ArrayList<>();
     private int screenX;
     private int screenY;
-    private RectF rectBar;
+    private float barLeft;
+    private float barRight;
+    private float barTop;
 
     float cx, cy, radius;
     private float barWidth;
@@ -81,10 +83,13 @@ public class BrickView extends SurfaceView implements Runnable {
             stars.add(s);
         }
         barWidth = screenX * 0.7f - screenX * 0.3f;
-        rectBar = new RectF(screenX * 0.3f, screenY * 0.93f, screenX * 0.3f + barWidth, screenY * 0.93f + 12);
-        cx = screenX * 0.4f;
-        cy = screenY * 0.7f;
+        barTop = screenY * 0.93f;
+        barLeft = screenX * 0.3f;
+        barRight = barLeft + barWidth;
+
         radius = 46;
+        cx = screenX / 2;
+        cy = barTop - radius * 2;
         rectBall = new RectF(cx, cy, cx + radius, cy + radius);
         map = new MapGenerator(screenX, screenY);
     }
@@ -110,7 +115,7 @@ public class BrickView extends SurfaceView implements Runnable {
         }
 
         //更新球位置
-        if (rectBall.intersect(rectBar)) {
+        if (cx >= barLeft && cx <= barRight && cy >= barTop - radius) {
             ydir = -ydir;
         }
         if (cx <= 0) {
@@ -132,32 +137,23 @@ public class BrickView extends SurfaceView implements Runnable {
         rectBall.right = cx + radius;
         rectBall.bottom = cy + radius;
 
-        float left = map.firstWall().wall.left;
-        float top = map.firstWall().wall.top;
-        float right = map.lastWall().wall.right;
-        float bottom = map.lastWall().wall.bottom;
-        RectF bigWall = new RectF(left, top, right, bottom);
-//        if (rectBall.intersect(bigWall)) {
-            outer:
-            for (int y = 0; y < map.map.length; y++) {
-                for (int x = 0; x < map.map[0].length; x++) {
-                    MapWall wall = map.map[y][x];
-                    if (wall.iShow) {
-                        if (rectBall.intersect(wall.wall)) {
-                            if (rectBall.left <= wall.wall.left || rectBall.left >= wall.wall.right) {
-                                xdir = -xdir;
-                            } else {
-                                ydir = -ydir;
-                            }
-                            map.setBrickValue(y, x);
-                            map.totalWall--;
-                            score += 5;
-                            break outer;
-                        }
+        outer:
+        for (int y = 0; y < map.map.length; y++) {
+            for (int x = 0; x < map.map[0].length; x++) {
+                MapWall wall = map.map[y][x];
+                if (wall.iShow && rectBall.intersect(wall.wall)) {
+                    if (rectBall.left + 23 <= wall.wall.left || rectBall.left + 23 >= wall.wall.right) {
+                        xdir = -xdir;
+                    } else {
+                        ydir = -ydir;
                     }
+                    map.setBrickValue(y, x);
+                    map.totalWall--;
+                    score += 5;
+                    break outer;
                 }
             }
-//        }
+        }
 
     }
 
@@ -182,7 +178,10 @@ public class BrickView extends SurfaceView implements Runnable {
 
             //画接球条
             paint.setColor(Color.GREEN);
-            canvas.drawRoundRect(rectBar, 8, 8, paint);
+//            canvas.drawRoundRect(rectBar, 8, 8, paint);
+            paint.setStrokeWidth(10);
+            paint.setStrokeCap(Paint.Cap.ROUND);
+            canvas.drawLine(barLeft, barTop, barRight, barTop, paint);
 
             //画球
             paint.setColor(Color.YELLOW);
@@ -257,20 +256,18 @@ public class BrickView extends SurfaceView implements Runnable {
             case MotionEvent.ACTION_MOVE:
                 float moveX = motionEvent.getX();
                 float moveY = motionEvent.getY();
-                RectF temp = new RectF(rectBar);
                 float diffX = (moveX - downX) * 0.51f;
-                temp.left = rectBar.left + diffX;
-                temp.right = rectBar.right + diffX;
-                if (temp.left < 0) {
-                    temp.left = 0;
-                    temp.right = barWidth;
+                float tempLeft = barLeft + diffX;
+                float tempRight = barRight + diffX;
+                if (tempLeft < 0) {
+                    tempLeft = 0;
+                    tempRight = barWidth;
+                } else if (tempRight > screenX) {
+                    tempLeft = screenX - barWidth;
+                    tempRight = screenX;
                 }
-                if (temp.right > screenX) {
-                    temp.left = screenX - barWidth;
-                    temp.right = screenX;
-                }
-                rectBar.left = temp.left;
-                rectBar.right = temp.right;
+                barLeft = tempLeft;
+                barRight = tempRight;
                 downX = moveX;
                 downY = moveY;
                 break;
