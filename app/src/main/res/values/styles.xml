@@ -10,7 +10,12 @@
     </style>
 
     <style name="NoActionbar" parent="AppTheme">
-        <item name="android:windowActionBar">false</item>
+        <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="FullScreen" parent="NoActionbar">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
     </style>
 </resources>

@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -131,12 +132,13 @@ public class LotteryActivity extends AppCompatActivity implements AdapterView.On
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         String lottery = lotteryStr.get(position);
         if (!"双色球".equals(lottery)) {
-            new AlertDialog.Builder(this)
-                    .setCancelable(false)
-                    .setTitle("提示")
-                    .setMessage("只能查询‘双色球’！")
-                    .setPositiveButton("确定", null)
-                    .create().show();
+//            new AlertDialog.Builder(this)
+//                    .setCancelable(false)
+//                    .setTitle("提示")
+//                    .setMessage("只能查询‘双色球’！")
+//                    .setPositiveButton("确定", null)
+//                    .create().show();
+            Toast.makeText(this, "只能查询‘双色球’", Toast.LENGTH_SHORT).show();
             return;
         }
         Intent intent = new Intent(this, LotteryInfoActivity.class);

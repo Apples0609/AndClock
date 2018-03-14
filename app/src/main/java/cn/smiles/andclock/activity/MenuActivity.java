@@ -35,6 +35,7 @@ public class MenuActivity extends AppCompatActivity implements AdapterView.OnIte
 
         datas = new ArrayList<>();
 
+        datas.add(new MenuEntity("打砖块游戏", BrickActivity.class));
         datas.add(new MenuEntity("彩票查询", LotteryActivity.class));
         datas.add(new MenuEntity("音乐播放动效", VisualizerTestActivity.class));
         datas.add(new MenuEntity("ViewPager动画测试", ViewPagerActivity.class));

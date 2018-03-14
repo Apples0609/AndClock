@@ -224,7 +224,7 @@ public class LotteryInfoActivity extends AppCompatActivity implements OnPhotoTap
                 Calendar curr = Calendar.getInstance();
                 int year = curr.get(Calendar.YEAR);
                 List<String> years = new ArrayList<>();
-                for (int i = 0; i < 6; i++) {
+                for (int i = 0; i < 4; i++) {
                     years.add(String.valueOf(year - i));
                 }
                 final String[] yearArrs = years.toArray(new String[years.size()]);
