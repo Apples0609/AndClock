@@ -13,6 +13,7 @@ import android.view.SurfaceView;
 import java.util.ArrayList;
 
 import cn.smiles.andclock.other.MapGenerator;
+import cn.smiles.andclock.other.MapWall;
 import cn.smiles.andclock.other.Star;
 
 
@@ -31,9 +32,6 @@ public class BrickView extends SurfaceView implements Runnable {
     private ArrayList<Star> stars = new ArrayList<>();
     private int screenX;
     private int screenY;
-    private RectF leftLine;
-    private RectF topLine;
-    private RectF rightLine;
     private RectF rectBar;
 
     float cx, cy, radius;
@@ -43,6 +41,7 @@ public class BrickView extends SurfaceView implements Runnable {
     private RectF rectBall;
     private MapGenerator map;
     private int score;
+    private float downX, downY;
 
     public BrickView(Context context) {
         super(context);
@@ -81,14 +80,11 @@ public class BrickView extends SurfaceView implements Runnable {
             Star s = new Star(screenX, screenY);
             stars.add(s);
         }
-        leftLine = new RectF(0, 0, 1, screenY);
-        topLine = new RectF(0, 0, screenX, 1);
-        rightLine = new RectF(screenX - 1, 0, screenX, screenY);
         barWidth = screenX * 0.7f - screenX * 0.3f;
-        rectBar = new RectF(screenX * 0.3f, screenY * 0.9f, screenX * 0.3f + barWidth, screenY * 0.9f + 16);
+        rectBar = new RectF(screenX * 0.3f, screenY * 0.93f, screenX * 0.3f + barWidth, screenY * 0.93f + 12);
         cx = screenX * 0.4f;
         cy = screenY * 0.7f;
-        radius = 50;
+        radius = 46;
         rectBall = new RectF(cx, cy, cx + radius, cy + radius);
         map = new MapGenerator(screenX, screenY);
     }
@@ -117,18 +113,18 @@ public class BrickView extends SurfaceView implements Runnable {
         if (rectBall.intersect(rectBar)) {
             ydir = -ydir;
         }
-        if (rectBall.intersect(leftLine)) {
+        if (cx <= 0) {
             xdir = -xdir;
         }
-        if (rectBall.intersect(topLine)) {
+        if (cy <= 0) {
             ydir = -ydir;
         }
-        if (rectBall.intersect(rightLine)) {
+        if (cx >= screenX - radius) {
             xdir = -xdir;
         }
-//        if (cy > screenY - radius) {
-//            ydir = -ydir;
-//        }
+        if (map.totalWall <= 0 && cy > screenY - radius) {
+            ydir = -ydir;
+        }
         cx += xdir;
         cy += ydir;
         rectBall.left = cx;
@@ -136,23 +132,32 @@ public class BrickView extends SurfaceView implements Runnable {
         rectBall.right = cx + radius;
         rectBall.bottom = cy + radius;
 
-        for (int y = 0; y < map.map.length; y++) {
-            for (int x = 0; x < map.map[0].length; x++) {
-                RectF wall = map.map[y][x];
-                if (wall != null) {
-                    if (rectBall.intersect(wall)) {
-                        map.setBrickValue(y, x);
-                        map.totalWall--;
-                        score += 5;
-                        if (rectBall.left <= wall.left || rectBall.left >= wall.right) {
-                            xdir = -xdir;
-                        } else {
-                            ydir = -ydir;
+        float left = map.firstWall().wall.left;
+        float top = map.firstWall().wall.top;
+        float right = map.lastWall().wall.right;
+        float bottom = map.lastWall().wall.bottom;
+        RectF bigWall = new RectF(left, top, right, bottom);
+//        if (rectBall.intersect(bigWall)) {
+            outer:
+            for (int y = 0; y < map.map.length; y++) {
+                for (int x = 0; x < map.map[0].length; x++) {
+                    MapWall wall = map.map[y][x];
+                    if (wall.iShow) {
+                        if (rectBall.intersect(wall.wall)) {
+                            if (rectBall.left <= wall.wall.left || rectBall.left >= wall.wall.right) {
+                                xdir = -xdir;
+                            } else {
+                                ydir = -ydir;
+                            }
+                            map.setBrickValue(y, x);
+                            map.totalWall--;
+                            score += 5;
+                            break outer;
                         }
                     }
                 }
             }
-        }
+//        }
 
     }
 
@@ -175,15 +180,9 @@ public class BrickView extends SurfaceView implements Runnable {
             // drawing map
             map.draw(canvas);
 
-            //画左 上 右边界线
-            paint.setColor(Color.TRANSPARENT);
-            canvas.drawRect(leftLine, paint);
-            canvas.drawRect(topLine, paint);
-            canvas.drawRect(rightLine, paint);
-
             //画接球条
             paint.setColor(Color.GREEN);
-            canvas.drawRect(rectBar, paint);
+            canvas.drawRoundRect(rectBar, 8, 8, paint);
 
             //画球
             paint.setColor(Color.YELLOW);
@@ -195,18 +194,17 @@ public class BrickView extends SurfaceView implements Runnable {
             canvas.drawText(String.valueOf(score), screenX - 60, 60, paint);
 
             if (map.totalWall <= 0) {
-                playing = false;
                 paint.setColor(Color.RED);
                 paint.setTextAlign(Paint.Align.CENTER);
                 paint.setTextSize(80);
                 canvas.drawText("你赢了！", screenX / 2, screenY / 2 - 60, paint);
             }
             if (cy > screenY) {
-                playing = false;
                 paint.setColor(Color.RED);
                 paint.setTextAlign(Paint.Align.CENTER);
                 paint.setTextSize(80);
                 canvas.drawText("你输了！", screenX / 2, screenY / 2 - 60, paint);
+                playing = false;
             }
 
             //Unlocking the canvas
@@ -242,8 +240,6 @@ public class BrickView extends SurfaceView implements Runnable {
         gameThread.start();
     }
 
-    private float downX, downY;
-
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
         switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
@@ -265,11 +261,11 @@ public class BrickView extends SurfaceView implements Runnable {
                 float diffX = (moveX - downX) * 0.51f;
                 temp.left = rectBar.left + diffX;
                 temp.right = rectBar.right + diffX;
-                if (temp.intersect(leftLine)) {
+                if (temp.left < 0) {
                     temp.left = 0;
                     temp.right = barWidth;
                 }
-                if (temp.intersect(rightLine)) {
+                if (temp.right > screenX) {
                     temp.left = screenX - barWidth;
                     temp.right = screenX;
                 }
