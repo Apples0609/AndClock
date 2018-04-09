@@ -2,6 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="cn.smiles.andclock">
 
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:smallScreens="true"
+        android:xlargeScreens="true"/>
+
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -9,6 +16,15 @@
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+
+    <uses-permission android:name="android.permission.FLASHLIGHT"/>
+
+    <uses-feature android:name="android.hardware.camera"/>
+    <uses-feature android:name="android.hardware.camera.autofocus"/>
+
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -88,6 +104,41 @@
             android:name=".activity.BrickActivity"
             android:theme="@style/FullScreen">
         </activity>
+
+        <activity
+            android:name="kr.gdg.android.textureview.ListActivity"
+            android:label="@string/list_activity">
+        </activity>
+        <activity
+            android:name="kr.gdg.android.textureview.CameraActivity"
+            android:label="@string/camera_activity">
+        </activity>
+        <activity
+            android:name="kr.gdg.android.textureview.GLTriangleActivity"
+            android:label="@string/gltriangle_activity">
+        </activity>
+        <activity
+            android:name="kr.gdg.android.textureview.CanvasActivity"
+            android:label="@string/canvas_activity">
+        </activity>
+        <activity
+            android:name="kr.gdg.android.textureview.Canvas2Activity"
+            android:label="@string/canvas_activity">
+        </activity>
+
+        <activity android:name="com.ycuwq.datepicker.DatepickerDemoActivity">
+        </activity>
+
+        <activity
+            android:name="com.dtr.zxing.activity.CaptureActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar">
+        </activity>
+        <activity
+            android:name="com.dtr.zxing.activity.ResultActivity"
+            android:label="条码结果"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo.Light"/>
     </application>
 
 </manifest>

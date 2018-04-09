@@ -521,7 +521,7 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
             if (file.isFile()) {
                 file.delete();
             } else {
-                File[] children = file.listFiles();//ffile.list 有个获取file数组的方法
+                File[] children = file.listFiles();//ffile.textureview_demo_list 有个获取file数组的方法
                 if (children == null) {
                     new AlertDialog.Builder(CameraActivity.this).setTitle("该路径下文件为空").setPositiveButton("确认", null)
                             .show();

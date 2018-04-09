@@ -13,4 +13,20 @@
     <string name="sales_quantity">本期销量：%s元（%s注）</string>
     <string name="jackpot">奖池滚存：%s元</string>
     <string name="front_result">上一期</string>
+
+    <string name="TextureViewDemo">TextureView Demo</string>
+    <string name="camera_activity">Camera</string>
+    <string name="gltriangle_activity">GL Triangle</string>
+    <string name="canvas_activity">Canvas Activity</string>
+
+    <string name="rotate_left">Rotate Left</string>
+    <string name="rotate_right">Rotate Right</string>
+    <string name="increase_alpha">Increase Alpha</string>
+    <string name="decrease_alpha">Decrease Alpha</string>
+    <string name="list_activity">TextureView Demo</string>
+
+    <string name="ycuwq_datepicker_cancel">取消</string>
+    <string name="ycuwq_datepicker_decide">确认</string>
+    <string name="ycuwq_datepicker_hour">时</string>
+    <string name="ycuwq_datepicker_minute">分</string>
 </resources>

@@ -31,7 +31,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * 彩票
+ * 彩票种类
  *
  * @author kaifang
  * @date 2018/2/28 17:25

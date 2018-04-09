@@ -13,12 +13,16 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.dtr.zxing.activity.CaptureActivity;
+import com.ycuwq.datepicker.DatepickerDemoActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.smiles.andclock.R;
+import kr.gdg.android.textureview.ListActivity;
 
 public class MenuActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
@@ -34,7 +38,9 @@ public class MenuActivity extends AppCompatActivity implements AdapterView.OnIte
         setTitle("菜单");
 
         datas = new ArrayList<>();
-
+        datas.add(new MenuEntity("扫描二维码", CaptureActivity.class));
+        datas.add(new MenuEntity("日期选择", DatepickerDemoActivity.class));
+        datas.add(new MenuEntity("TextureView Demo", ListActivity.class));
         datas.add(new MenuEntity("打砖块游戏", BrickActivity.class));
         datas.add(new MenuEntity("彩票查询", LotteryActivity.class));
         datas.add(new MenuEntity("音乐播放动效", VisualizerTestActivity.class));
