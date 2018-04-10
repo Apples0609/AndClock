@@ -4,10 +4,13 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.TypedValue;
+import android.webkit.URLUtil;
 import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
@@ -23,6 +26,7 @@ public class ResultActivity extends Activity {
     private ImageView mResultImage;
     private TextView mResultText;
     private ClipboardManager clipboard;
+    private String result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +37,14 @@ public class ResultActivity extends Activity {
 
         mResultImage = (ImageView) findViewById(R.id.result_image);
         mResultText = (TextView) findViewById(R.id.result_text);
+        mResultText.setOnClickListener(v -> {
+            if (URLUtil.isValidUrl(result)) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(result));
+                startActivity(browserIntent);
+            } else {
+                Toast.makeText(this, "内容已复制", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         if (null != extras) {
             int width = extras.getInt("width");
@@ -45,7 +57,7 @@ public class ResultActivity extends Activity {
 
             mResultImage.setLayoutParams(lps);
 
-            String result = extras.getString("result");
+            result = extras.getString("result");
             mResultText.setText(result);
             copyText(result);
 
