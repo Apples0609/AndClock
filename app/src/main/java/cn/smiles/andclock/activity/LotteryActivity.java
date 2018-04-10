@@ -53,7 +53,6 @@ public class LotteryActivity extends AppCompatActivity implements AdapterView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lottery);
         ButterKnife.bind(this);
-        setTitle("彩票种类");
         preferences = PreferenceManager.getDefaultSharedPreferences(LotteryActivity.this);
 
         lotteryStr = new ArrayList<>();

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -13,7 +14,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.dtr.zxing.activity.CaptureActivity;
+import com.ycuwq.datepicker.DatepickerDemoActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +22,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.smiles.andclock.R;
+import kr.gdg.android.textureview.ListActivity;
 
-public class MenuActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class TestStudyActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     @BindView(R.id.lv_menu)
     ListView lvMenu;
@@ -35,17 +37,33 @@ public class MenuActivity extends AppCompatActivity implements AdapterView.OnIte
         ButterKnife.bind(this);
 
         datas = new ArrayList<>();
-        datas.add(new MenuEntity("扫描二维码", CaptureActivity.class));
-        datas.add(new MenuEntity("打砖块游戏", BrickActivity.class));
-        datas.add(new MenuEntity("彩票查询", LotteryActivity.class));
-        datas.add(new MenuEntity("简单日历", CalendarActivity.class));
-        datas.add(new MenuEntity("Web浏览器", WebViewActivity.class));
-        datas.add(new MenuEntity("安卓辅助", GoHomeActivity.class));
-        datas.add(new MenuEntity("=测试学习=", TestStudyActivity.class));
+
+        datas.add(new MenuEntity("音乐播放离子动效", VisualizerTestActivity.class));
+        datas.add(new MenuEntity("滚轮日期选择", DatepickerDemoActivity.class));
+        datas.add(new MenuEntity("TextureView Demo", ListActivity.class));
+        datas.add(new MenuEntity("ViewPager动画测试", ViewPagerActivity.class));
+        datas.add(new MenuEntity("ConstraintLayout 测试", ConstraintLayoutActivity.class));
+        datas.add(new MenuEntity("Camera 测试", CameraActivity.class));
+        datas.add(new MenuEntity("MainActivity", MainActivity.class));
+
         MenuAdapter adapter = new MenuAdapter(this, datas);
         lvMenu.setAdapter(adapter);
         lvMenu.setOnItemClickListener(this);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+//                NavUtils.navigateUpFromSameTask(this);
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
