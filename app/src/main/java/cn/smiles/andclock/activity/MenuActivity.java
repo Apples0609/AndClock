@@ -33,6 +33,7 @@ public class MenuActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         ButterKnife.bind(this);
+        setTitle("主菜单");
 
         datas = new ArrayList<>();
         datas.add(new MenuEntity("扫描二维码", CaptureActivity.class));

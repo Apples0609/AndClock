@@ -110,7 +110,6 @@
         <!-- 主菜单 -->
         <activity
             android:name=".activity.MenuActivity"
-            android:label="主菜单"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
