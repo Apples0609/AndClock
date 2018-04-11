@@ -35,17 +35,20 @@
         android:roundIcon="@drawable/ic_android_pink_logo_48dp"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <!-- 播放音乐、钟表 -->
         <activity
             android:name=".activity.MainActivity"
-            android:label="播放音乐、钟表">
+            android:label="播放音乐、钟表"
+            android:screenOrientation="portrait">
         </activity>
         <!-- 安卓辅助 -->
         <activity
             android:name=".activity.GoHomeActivity"
             android:excludeFromRecents="true"
             android:label="安卓辅助"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
         </activity>
 
         <!-- 安卓辅助服务 -->
@@ -62,8 +65,7 @@
             android:process=":RemoteSer">
         </service>
         <!-- 安卓辅助广播 -->
-        <receiver
-            android:name=".receiver.BootBroadcastReceiver">
+        <receiver android:name=".receiver.BootBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
                 <action android:name="android.intent.action.USER_PRESENT"/>
@@ -74,22 +76,26 @@
         <!-- ConstraintLayout 测试 -->
         <activity
             android:name=".activity.ConstraintLayoutActivity"
-            android:label="ConstraintLayout 测试">
+            android:label="ConstraintLayout 测试"
+            android:screenOrientation="portrait">
         </activity>
         <!-- WebView 浏览器 -->
         <activity
             android:name=".activity.WebViewActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/NoActionbar">
         </activity>
         <!-- 简单日历 -->
         <activity
             android:name=".activity.CalendarActivity"
-            android:label="简单日历">
+            android:label="简单日历"
+            android:screenOrientation="portrait">
         </activity>
         <!-- 简单日历2 -->
         <activity
             android:name=".activity.CalendarActivity2"
-            android:label="简单日历2">
+            android:label="简单日历2"
+            android:screenOrientation="portrait">
         </activity>
         <!-- Camera 测试 -->
         <activity
@@ -100,7 +106,8 @@
         <!-- ViewPager 动画测试 -->
         <activity
             android:name=".activity.ViewPagerActivity"
-            android:label="ViewPager 动画">
+            android:label="ViewPager 动画"
+            android:screenOrientation="portrait">
         </activity>
         <!-- 音乐播放离子动效 -->
         <activity
@@ -129,7 +136,8 @@
         </activity>
         <!-- 彩票查询结果 -->
         <activity
-            android:name=".activity.LotteryInfoActivity">
+            android:name=".activity.LotteryInfoActivity"
+            android:screenOrientation="portrait">
         </activity>
         <!-- 打砖块游戏 -->
         <activity
@@ -179,6 +187,12 @@
             android:label="扫码结果"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Light"/>
+        <!-- 所有已安装APP列表 -->
+        <activity
+            android:name=".activity.AllInstallAppActivity"
+            android:label="所有安装APP"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>

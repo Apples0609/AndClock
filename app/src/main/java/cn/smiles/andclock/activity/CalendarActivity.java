@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,6 +24,8 @@ public class CalendarActivity extends AppCompatActivity implements CalendarTools
 
     @BindView(R.id.lv_list_view)
     ListView lvListView;
+    @BindView(R.id.progressBar3)
+    ProgressBar progressBar3;
     private CalendarTools calendarTools;
     private MenuItem action_sum;
 
@@ -30,11 +34,21 @@ public class CalendarActivity extends AppCompatActivity implements CalendarTools
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
         ButterKnife.bind(this);
-        calendarTools = new CalendarTools(5);
+        new Thread(() -> {
+            calendarTools = new CalendarTools(5);
+            calendarTools.listener = CalendarActivity.this;
+            runOnUiThread(() -> {
+                MListAdapter listAdapter = new MListAdapter(this, calendarTools);
+                lvListView.setAdapter(listAdapter);
+                lvListView.setSelection(calendarTools.getMcalendars().size() / 2);
+                progressBar3.setVisibility(View.GONE);
+            });
+        }).start();
+        /*calendarTools = new CalendarTools(5);
         calendarTools.listener = this;
         MListAdapter listAdapter = new MListAdapter(this, calendarTools);
         lvListView.setAdapter(listAdapter);
-        lvListView.setSelection(calendarTools.getMcalendars().size() / 2);
+        lvListView.setSelection(calendarTools.getMcalendars().size() / 2);*/
     }
 
     @Override
@@ -52,6 +66,7 @@ public class CalendarActivity extends AppCompatActivity implements CalendarTools
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (calendarTools == null) return false;
         switch (item.getItemId()) {
             case R.id.action_today:
                 lvListView.setSelection(calendarTools.getMcalendars().size() / 2);
