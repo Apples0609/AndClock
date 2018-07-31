@@ -193,6 +193,12 @@
             android:label="所有安装APP"
             android:screenOrientation="portrait">
         </activity>
+        <!-- 双色球历史记录 -->
+        <activity
+            android:name=".activity.SSQActivity"
+            android:label="双色球开奖历史"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/top_menu"
+        android:title="返回顶端"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/item1_menu"
+        android:title="所有数据"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/item2_menu"
+        android:title="指定年份"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/item3_menu"
+        android:title="分析当前"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/submenu"
+        android:title="随机生成"
+        app:showAsAction="never">
+        <menu>
+            <item
+                android:id="@+id/sj_item1"
+                android:title="随机1注"
+                app:showAsAction="never"/>
+            <item
+                android:id="@+id/sj_item2"
+                android:title="随机3注"
+                app:showAsAction="never"/>
+            <item
+                android:id="@+id/sj_item3"
+                android:title="随机5注"
+                app:showAsAction="never"/>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/item5_menu"
+        android:title="抓取新数据"
+        app:showAsAction="never"/>
+
+</menu>

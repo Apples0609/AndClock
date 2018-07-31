@@ -24,6 +24,7 @@ import butterknife.ButterKnife;
 import cn.smiles.andclock.R;
 import cn.smiles.andclock.entity.LotteryTypeEntity;
 import cn.smiles.andclock.retrofit.LotteryTypeService;
+import cn.smiles.andclock.tools.Get500SSQData;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -36,7 +37,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * @author kaifang
  * @date 2018/2/28 17:25
  */
-public class LotteryActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class LotteryActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
     @BindView(R.id.lv_lottery_type)
     ListView lvLotteryType;
@@ -59,6 +60,9 @@ public class LotteryActivity extends AppCompatActivity implements AdapterView.On
         adapter = new ArrayAdapter<>(this, R.layout.item_menu, R.id.tv_activity_title, lotteryStr);
         lvLotteryType.setAdapter(adapter);
         lvLotteryType.setOnItemClickListener(this);
+        lvLotteryType.setOnItemLongClickListener(this);
+
+        Get500SSQData.querySSQData(true);
 
         String sp_lottery = preferences.getString(lotteryTYPE, null);
         if (!TextUtils.isEmpty(sp_lottery)) {
@@ -143,5 +147,19 @@ public class LotteryActivity extends AppCompatActivity implements AdapterView.On
         Intent intent = new Intent(this, LotteryInfoActivity.class);
         intent.putExtra("lottery", lottery);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        String lottery = lotteryStr.get(position);
+        if ("双色球".equals(lottery)) {
+            new AlertDialog.Builder(this)
+                    .setItems(new String[]{"开奖历史"}, (dialog, which) -> {
+                        startActivity(new Intent(LotteryActivity.this, SSQActivity.class));
+                    })
+                    .create().show();
+            return true;
+        }
+        return false;
     }
 }
