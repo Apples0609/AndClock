@@ -62,7 +62,7 @@ public class LotteryActivity extends AppCompatActivity implements AdapterView.On
         lvLotteryType.setOnItemClickListener(this);
         lvLotteryType.setOnItemLongClickListener(this);
 
-        Get500SSQData.querySSQData(true);
+        Get500SSQData.querySSQData();
 
         String sp_lottery = preferences.getString(lotteryTYPE, null);
         if (!TextUtils.isEmpty(sp_lottery)) {

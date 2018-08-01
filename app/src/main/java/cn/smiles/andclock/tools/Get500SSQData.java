@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
+import android.widget.Toast;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -15,8 +16,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Calendar;
-import java.util.concurrent.TimeUnit;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import cn.smiles.andclock.SmilesApplication;
 import cn.smiles.andclock.entity.SSQEntity;
@@ -38,7 +40,7 @@ public class Get500SSQData {
     public final static String dbFileName = "ssq.db";
 
     private static SharedPreferences dsp;
-    private static long curTimeMillis;
+    private static String curDate;
 
     /**
      * 获取500html数据
@@ -57,10 +59,10 @@ public class Get500SSQData {
             Response<String> response = call.execute();
             String body = response.body();
             if (body != null) {
-//                System.out.println(body);
+                System.out.println(body);
                 insertSSQDB(body);
+                dsp.edit().putString("SaveDBTime", curDate).apply();
             }
-            dsp.edit().putLong("SaveDBTime", curTimeMillis).apply();
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("获取500双色球数据错误，" + e.getMessage());
@@ -71,65 +73,60 @@ public class Get500SSQData {
         Document doc = Jsoup.parse(html);
         Element tbody = doc.selectFirst("tbody#tdata");
         Elements elements = tbody.select("tr.t_tr1");
-        if (elements.isEmpty()) return;
-        SQLiteDatabase liteDb = SQLiteDatabase.openOrCreateDatabase(SmilesApplication.appContext.getDatabasePath(dbFileName), null);
-        liteDb.beginTransaction();
-        for (Element element : elements) {
-            Elements tags = element.getElementsByTag("td");
-            SSQEntity entity = new SSQEntity();
-            int i = 0;
-            entity.setPeriod(tags.get(i++).text().trim());
-            entity.setRed_1(tags.get(i++).text().trim());
-            entity.setRed_2(tags.get(i++).text().trim());
-            entity.setRed_3(tags.get(i++).text().trim());
-            entity.setRed_4(tags.get(i++).text().trim());
-            entity.setRed_5(tags.get(i++).text().trim());
-            entity.setRed_6(tags.get(i++).text().trim());
-            entity.setBlue_1(tags.get(i++).text().trim());
-            entity.setHappy_sunday(tags.get(i++).text().trim());
-            entity.setPool_prize(tags.get(i++).text().trim());
-            entity.setFirst_count(tags.get(i++).text().trim());
-            entity.setFirst_prize(tags.get(i++).text().trim());
-            entity.setSecond_count(tags.get(i++).text().trim());
-            entity.setSecond_prize(tags.get(i++).text().trim());
-            entity.setTotal_prize(tags.get(i++).text().trim());
-            entity.setLottery_date(tags.get(i).text().trim());
-            liteDb.insert("ssq_history", null, entity.insertDB());
+        if (!elements.isEmpty()) {
+            SQLiteDatabase liteDb = SQLiteDatabase.openOrCreateDatabase(SmilesApplication.appContext.getDatabasePath(dbFileName), null);
+            liteDb.beginTransaction();
+            for (Element element : elements) {
+                Elements tags = element.getElementsByTag("td");
+                SSQEntity entity = new SSQEntity();
+                int i = 0;
+                entity.setPeriod(tags.get(i++).text().trim());
+                entity.setRed_1(tags.get(i++).text().trim());
+                entity.setRed_2(tags.get(i++).text().trim());
+                entity.setRed_3(tags.get(i++).text().trim());
+                entity.setRed_4(tags.get(i++).text().trim());
+                entity.setRed_5(tags.get(i++).text().trim());
+                entity.setRed_6(tags.get(i++).text().trim());
+                entity.setBlue_1(tags.get(i++).text().trim());
+                entity.setHappy_sunday(tags.get(i++).text().trim());
+                entity.setPool_prize(tags.get(i++).text().trim());
+                entity.setFirst_count(tags.get(i++).text().trim());
+                entity.setFirst_prize(tags.get(i++).text().trim());
+                entity.setSecond_count(tags.get(i++).text().trim());
+                entity.setSecond_prize(tags.get(i++).text().trim());
+                entity.setTotal_prize(tags.get(i++).text().trim());
+                entity.setLottery_date(tags.get(i).text().trim());
+                liteDb.insert("ssq_history", null, entity.insertDB());
+            }
+            liteDb.setTransactionSuccessful();
+            liteDb.endTransaction();
+            liteDb.close();
+            SmilesApplication.handler.post(() -> Toast.makeText(SmilesApplication.appContext, "双色球开奖更新成功~", Toast.LENGTH_SHORT).show());
         }
-        liteDb.setTransactionSuccessful();
-        liteDb.endTransaction();
-        liteDb.close();
     }
 
     /**
      * 插入最新双色球开奖数据
-     *
-     * @param isAuto true 自动获取 false 手动获取
      */
-    public static void querySSQData(final boolean isAuto) {
+    public static void querySSQData() {
         new Thread(() -> {
             boolean b = copyDB();
             if (b) {
                 dsp = PreferenceManager.getDefaultSharedPreferences(SmilesApplication.appContext);
-                long oldTimeMillis = dsp.getLong("SaveDBTime", -1);
-                Calendar cal = Calendar.getInstance();
-                // Set time fields to zero
-                cal.set(Calendar.HOUR_OF_DAY, 0);
-                cal.set(Calendar.MINUTE, 0);
-                cal.set(Calendar.SECOND, 0);
-                cal.set(Calendar.MILLISECOND, 0);
-                curTimeMillis = cal.getTimeInMillis();
-                if (oldTimeMillis == -1 || !isAuto || (curTimeMillis - oldTimeMillis) > TimeUnit.DAYS.toMillis(2)) {
+                String oldDate = dsp.getString("SaveDBTime", null);
+                curDate = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(new Date());
+                if (oldDate == null || !curDate.equals(oldDate)) {
                     SQLiteDatabase liteDb = SQLiteDatabase.openOrCreateDatabase(SmilesApplication.appContext.getDatabasePath(dbFileName), null);
                     Cursor cursor = liteDb.rawQuery("select max(period) from ssq_history;", null);
                     cursor.moveToFirst();
                     final String startPeriod = String.valueOf(Integer.parseInt(cursor.getString(0)) + 1);
                     cursor.close();
                     liteDb.close();
-                    int year = cal.get(Calendar.YEAR);
-                    final String endPeriod = String.valueOf(year).substring(2) + "300";
+                    final String endPeriod = curDate.substring(2, 4) + "300";
                     retrofitHtml(startPeriod, endPeriod);
                 }
+                dsp = null;
+                curDate = null;
             }
         }).start();
     }

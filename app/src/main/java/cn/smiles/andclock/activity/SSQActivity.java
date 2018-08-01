@@ -25,6 +25,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -45,6 +46,8 @@ public class SSQActivity extends AppCompatActivity {
     private SSQAdapter ssqAdapter;
     private int currYear;
     private RecyclerView rvView;
+    private Integer[] sjRed;
+    private Integer[] sjBlue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,39 +95,54 @@ public class SSQActivity extends AppCompatActivity {
                 analysisList();
                 break;
             case R.id.sj_item1:
-                randomOnlyCount(1);
+                randomOnlyCount(1, false);
                 break;
             case R.id.sj_item2:
-                randomOnlyCount(3);
+                randomOnlyCount(3, false);
                 break;
             case R.id.sj_item3:
-                randomOnlyCount(5);
+                randomOnlyCount(5, false);
                 break;
             case R.id.item5_menu:
-                Get500SSQData.querySSQData(false);
+                Get500SSQData.querySSQData();
+                break;
+            case R.id.sj_item13:
+                randomOnlyCount(3, true);
+                break;
+            case R.id.sj_item15:
+                randomOnlyCount(5, true);
                 break;
         }
         return true;
     }
 
-    private void randomOnlyCount(int count) {
+    private void randomOnlyCount(final int count, final boolean isAna) {
+        if (isAna && sjRed == null && sjBlue == null) {
+            Toast.makeText(this, "请先分析列表！", Toast.LENGTH_SHORT).show();
+            return;
+        }
         String[] arrs = new String[count];
         for (int i = 0; i < count; i++) {
-            arrs[i] = randomSSQ();
+            arrs[i] = randomSSQ(isAna);
         }
         new AlertDialog.Builder(this)
                 .setCancelable(false)
                 .setTitle("，，，后为蓝球")
                 .setItems(arrs, null)
                 .setPositiveButton("确定", null)
+                .setNeutralButton("再来", ((dialog, which) -> randomOnlyCount(count, isAna)))
                 .create().show();
     }
 
-
-    private String randomSSQ() {
+    private String randomSSQ(boolean isAna) {
         LinkedList<Integer> reds = new LinkedList<>();
         for (Integer i = 1; i <= 33; i++) {
             reds.add(i);
+        }
+        if (isAna) {
+            for (Integer itnr : sjRed) {
+                addListCot(reds, itnr, 3);
+            }
         }
         StringBuilder ssq = new StringBuilder();
         ArrayList<Integer> tempR = new ArrayList<>();
@@ -142,10 +160,21 @@ public class SSQActivity extends AppCompatActivity {
         for (Integer i = 1; i <= 16; i++) {
             blues.add(i);
         }
+        if (isAna) {
+            for (Integer itnr : sjBlue) {
+                addListCot(blues, itnr, 3);
+            }
+        }
         Collections.shuffle(blues);
         Integer blue = blues.removeFirst();
         ssq.append(String.format(Locale.getDefault(), "，，%02d", blue));
         return ssq.toString();
+    }
+
+    private void addListCot(List<Integer> list, Integer itnr, int cot) {
+        for (int i = 0; i < cot; i++) {
+            list.add(itnr);
+        }
     }
 
     private void showAllData() {
@@ -207,8 +236,17 @@ public class SSQActivity extends AppCompatActivity {
                 Integer blue_1 = Integer.parseInt(entity.getBlue_1());
                 lhMBlue.put(blue_1, lhMBlue.get(blue_1) + 1);
             }
-            LinkedHashMap<Integer, Integer> sortRed = sortByValue(lhMRed);
-            LinkedHashMap<Integer, Integer> sortBlue = sortByValue(lhMBlue);
+            LinkedHashMap<Integer, Integer> sortReds = sortByValue(lhMRed);
+            LinkedHashMap<Integer, Integer> sortBlues = sortByValue(lhMBlue);
+
+            //取排序后前3球
+            Integer[] redTemp = sortReds.keySet().toArray(new Integer[sortReds.size()]);
+            Integer[] blueTemp = sortBlues.keySet().toArray(new Integer[sortBlues.size()]);
+            sjRed = new Integer[3];
+            System.arraycopy(redTemp, 0, sjRed, 0, sjRed.length);
+            sjBlue = new Integer[3];
+            System.arraycopy(blueTemp, 0, sjBlue, 0, sjBlue.length);
+
             StringBuilder spaceTile = new StringBuilder();
             StringBuilder spaceCon = new StringBuilder();
             for (int i = 0; i < 30; i++) {
@@ -218,13 +256,13 @@ public class SSQActivity extends AppCompatActivity {
             }
             ArrayList<String> lists = new ArrayList<>();
             lists.add(String.format("红球%s出现次数", spaceTile));
-            for (Map.Entry<Integer, Integer> entry : sortRed.entrySet()) {
+            for (Map.Entry<Integer, Integer> entry : sortReds.entrySet()) {
                 Integer key = entry.getKey();
                 Integer value = entry.getValue();
                 lists.add(String.format(Locale.getDefault(), "%02d%s%02d", key, spaceCon, value));
             }
             lists.add(String.format("蓝球%s出现次数", spaceTile));
-            for (Map.Entry<Integer, Integer> entry : sortBlue.entrySet()) {
+            for (Map.Entry<Integer, Integer> entry : sortBlues.entrySet()) {
                 Integer key = entry.getKey();
                 Integer value = entry.getValue();
                 lists.add(String.format(Locale.getDefault(), "%02d%s%02d", key, spaceCon, value));
