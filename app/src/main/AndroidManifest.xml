@@ -199,6 +199,11 @@
             android:label="双色球开奖历史"
             android:screenOrientation="portrait">
         </activity>
+        <activity
+            android:name=".activity.LoadClassActivity"
+            android:label="执行外部Class"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>

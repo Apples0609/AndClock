@@ -38,6 +38,7 @@ public class TestStudyActivity extends AppCompatActivity implements AdapterView.
 
         datas = new ArrayList<>();
 
+        datas.add(new MenuEntity("执行外部Class方法", LoadClassActivity.class));
         datas.add(new MenuEntity("音乐播放离子动效", VisualizerTestActivity.class));
         datas.add(new MenuEntity("滚轮日期选择", DatepickerDemoActivity.class));
         datas.add(new MenuEntity("TextureView Demo", ListActivity.class));
