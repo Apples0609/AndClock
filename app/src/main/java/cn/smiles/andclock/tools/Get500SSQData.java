@@ -16,6 +16,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.SocketTimeoutException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -41,6 +42,7 @@ public class Get500SSQData {
 
     private static SharedPreferences dsp;
     private static String curDate;
+    private static int jiShu = 0;
 
     /**
      * 获取500html数据
@@ -63,9 +65,17 @@ public class Get500SSQData {
                 insertSSQDB(body);
                 dsp.edit().putString("SaveDBTime", curDate).apply();
             }
+            jiShu = 0;
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("获取500双色球数据错误，" + e.getMessage());
+            if (e instanceof SocketTimeoutException) {
+                jiShu++;
+                if (jiShu < 3)
+                    querySSQData();
+            } else {
+                String em = "获取500双色球数据错误，" + e.getMessage();
+                SmilesApplication.handler.post(() -> Toast.makeText(SmilesApplication.appContext, em, Toast.LENGTH_SHORT).show());
+            }
         }
     }
 
