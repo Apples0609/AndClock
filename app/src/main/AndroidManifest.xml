@@ -204,6 +204,11 @@
             android:label="执行外部Class"
             android:screenOrientation="portrait">
         </activity>
+        <activity
+            android:name=".activity.GameActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen">
+        </activity>
     </application>
 
 </manifest>

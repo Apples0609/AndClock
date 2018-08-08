@@ -36,6 +36,7 @@ public class MenuActivity extends AppCompatActivity implements AdapterView.OnIte
         setTitle("主菜单");
 
         datas = new ArrayList<>();
+        datas.add(new MenuEntity("舒尔特方格", GameActivity.class));
         datas.add(new MenuEntity("APP列表", AllInstallAppActivity.class));
         datas.add(new MenuEntity("扫描二维码", CaptureActivity.class));
         datas.add(new MenuEntity("打砖块游戏", BrickActivity.class));
