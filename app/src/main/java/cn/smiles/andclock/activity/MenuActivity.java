@@ -36,7 +36,6 @@ public class MenuActivity extends AppCompatActivity implements AdapterView.OnIte
         setTitle("主菜单");
 
         datas = new ArrayList<>();
-        datas.add(new MenuEntity("舒尔特方格", GameActivity.class));
         datas.add(new MenuEntity("APP列表", AllInstallAppActivity.class));
         datas.add(new MenuEntity("扫描二维码", CaptureActivity.class));
         datas.add(new MenuEntity("打砖块游戏", BrickActivity.class));
@@ -44,6 +43,9 @@ public class MenuActivity extends AppCompatActivity implements AdapterView.OnIte
         datas.add(new MenuEntity("简单日历", CalendarActivity.class));
         datas.add(new MenuEntity("Web浏览器", WebViewActivity.class));
         datas.add(new MenuEntity("安卓辅助", GoHomeActivity.class));
+        datas.add(new MenuEntity("舒尔特方格", GameActivity.class));
+        datas.add(new MenuEntity("LED文字滚动", LedEffectActivity.class));
+
         datas.add(new MenuEntity("=测试学习=", TestStudyActivity.class));
         MenuAdapter adapter = new MenuAdapter(this, datas);
         lvMenu.setAdapter(adapter);
