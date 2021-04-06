@@ -3,7 +3,10 @@ package cn.smiles.andclock.activity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Paint;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,9 +21,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
+import java.util.stream.IntStream;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,6 +47,8 @@ public class GameActivity extends Activity implements ItemClickListener, Compoun
     TextView textView5;
     @BindView(R.id.btn_start)
     Button btnStart;
+    @BindView(R.id.btn_stop)
+    Button btnStop;
     @BindView(R.id.game_rule)
     TextView gameRule;
     private int itemWidth;
@@ -46,6 +56,8 @@ public class GameActivity extends Activity implements ItemClickListener, Compoun
     private int tcount;
     private int timeCount;
     private MyRecyclerViewAdapter adapter;
+    private SharedPreferences sps;
+    private Set<String> historyTime = new LinkedHashSet<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +82,13 @@ public class GameActivity extends Activity implements ItemClickListener, Compoun
         adapter.setClickListener(this);
         schulteGrid.setAdapter(adapter);
 
+        gameRule.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        gameRule.getPaint().setAntiAlias(true);
+        sps = PreferenceManager.getDefaultSharedPreferences(this);
+        Set<String> times = sps.getStringSet("historyTime", null);
+        if (times != null) {
+            historyTime.addAll(times);
+        }
     }
 
     @Override
@@ -88,6 +107,16 @@ public class GameActivity extends Activity implements ItemClickListener, Compoun
                     .setPositiveButton("确定", null)
                     .create().show();
             btnStart.setEnabled(true);
+            btnStop.setEnabled(false);
+            historyTime.add(textView5.getTag().toString());
+            sps.edit().putStringSet("historyTime", historyTime).apply();
+            double total = 0;
+            for (String t : historyTime) {
+                double v = Double.parseDouble(t);
+                total += v;
+            }
+            String avgTime = String.format(Locale.getDefault(), "%.1f秒", total / historyTime.size());
+            sps.edit().putString("avgTime", avgTime).apply();
         } else if (ct == tcount) {
             tcount++;
         }
@@ -114,7 +143,7 @@ public class GameActivity extends Activity implements ItemClickListener, Compoun
         }
     }
 
-    @OnClick({R.id.game_rule, R.id.btn_start})
+    @OnClick({R.id.game_rule, R.id.btn_start, R.id.btn_stop, R.id.textView5})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.game_rule:
@@ -131,6 +160,27 @@ public class GameActivity extends Activity implements ItemClickListener, Compoun
                 timeCount = 0;
                 SmilesApplication.handler.postDelayed(timer, 100);
                 btnStart.setEnabled(false);
+                btnStop.setEnabled(true);
+                break;
+            case R.id.btn_stop:
+                SmilesApplication.handler.removeCallbacks(timer);
+                btnStart.setEnabled(true);
+                btnStop.setEnabled(false);
+                break;
+            case R.id.textView5:
+                if (historyTime.isEmpty()) return;
+                final String[] s1 = historyTime.toArray(new String[0]);
+                String[] s2 = IntStream.rangeClosed(1, s1.length)
+                        .mapToObj(i -> s1[s1.length - i])
+                        .map(s -> s + "秒")
+                        .toArray(String[]::new);
+                System.out.println(historyTime);
+                new AlertDialog.Builder(this)
+                        .setCancelable(false)
+                        .setTitle("历史用时      平均：" + sps.getString("avgTime", null))
+                        .setItems(s2, null)
+                        .setPositiveButton("确定", null)
+                        .create().show();
                 break;
         }
     }

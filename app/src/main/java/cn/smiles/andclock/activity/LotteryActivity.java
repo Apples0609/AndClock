@@ -74,7 +74,12 @@ public class LotteryActivity extends AppCompatActivity implements AdapterView.On
                 return;
             }
         }
-        requestLotteryTpye();
+//        requestLotteryTpye();
+        List<String> result = new ArrayList<>();
+        result.add("双色球");
+        lotteryStr.addAll(result);
+        adapter.notifyDataSetChanged();
+        pbProgress.setVisibility(View.GONE);
     }
 
     private void requestLotteryTpye() {
@@ -144,9 +149,11 @@ public class LotteryActivity extends AppCompatActivity implements AdapterView.On
             Toast.makeText(this, "只能查询‘双色球’", Toast.LENGTH_SHORT).show();
             return;
         }
-        Intent intent = new Intent(this, LotteryInfoActivity.class);
-        intent.putExtra("lottery", lottery);
-        startActivity(intent);
+//        Intent intent = new Intent(this, LotteryInfoActivity.class);
+//        intent.putExtra("lottery", lottery);
+//        startActivity(intent);
+
+        startActivity(new Intent(LotteryActivity.this, SSQActivity.class));
     }
 
     @Override
