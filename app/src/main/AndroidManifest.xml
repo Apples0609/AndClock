@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="cn.smiles.andclock">
+    package="cn.smiles.andclock">
 
     <supports-screens
         android:anyDensity="true"
         android:largeScreens="true"
         android:normalScreens="true"
         android:smallScreens="true"
-        android:xlargeScreens="true"/>
+        android:xlargeScreens="true" />
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
-    <uses-permission android:name="android.permission.FLASHLIGHT"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <uses-feature
         android:name="android.hardware.camera"
-        android:required="true"/>
+        android:required="true" />
     <uses-feature
         android:name="android.hardware.camera.autofocus"
-        android:required="true"/>
+        android:required="true" />
 
     <application
         android:name=".SmilesApplication"
@@ -40,9 +40,9 @@
             android:label="@string/app_name2"
             android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
@@ -50,14 +50,13 @@
             android:hardwareAccelerated="false"
             android:label="led 滚动文字"
             android:screenOrientation="landscape"
-            android:theme="@style/FullScreen">
-        </activity>
+            android:theme="@style/FullScreen" />
         <activity
             android:name=".activity.MainActivity"
             android:label="播放音乐、钟表"
             android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
         <activity
@@ -65,143 +64,119 @@
             android:excludeFromRecents="true"
             android:label="安卓辅助"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait" />
 
         <service
             android:name=".service.AndroidService"
             android:enabled="true"
             android:exported="true"
-            android:label="安卓辅助服务">
-        </service>
+            android:label="安卓辅助服务" />
         <service
             android:name=".service.RemoteService"
             android:enabled="true"
             android:exported="true"
             android:label="安卓辅助保活服务"
-            android:process=":RemoteSer">
-        </service>
+            android:process=":RemoteSer" />
 
         <receiver
             android:name=".receiver.BootBroadcastReceiver"
             android:label="安卓辅助广播">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <action android:name="android.intent.action.USER_PRESENT"/>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
 
         <activity
             android:name=".activity.ConstraintLayoutActivity"
             android:label="ConstraintLayout 测试"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.WebViewActivity"
             android:label="WebView 浏览器"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionbar">
-        </activity>
+            android:theme="@style/NoActionbar" />
         <activity
             android:name=".activity.CalendarActivity"
             android:label="简单日历"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.CalendarActivity2"
             android:label="简单日历2"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.CameraActivity"
             android:label="Camera 测试"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.ViewPagerActivity"
             android:label="ViewPager 动画"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.VisualizerTestActivity"
-            android:label="Visualizer 音乐测试">
-        </activity>
+            android:label="Visualizer 音乐测试" />
         <activity
             android:name=".activity.TestStudyActivity"
             android:label="测试学习"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.LotteryActivity"
-            android:label="彩票种类">
-        </activity>
+            android:label="彩票种类" />
         <activity
             android:name=".activity.LotteryInfoActivity"
             android:label="彩票查询结果"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.BrickActivity"
             android:label="打砖块游戏"
-            android:theme="@style/FullScreen">
-        </activity>
+            android:theme="@style/FullScreen" />
         <activity
             android:name="kr.gdg.android.textureview.ListActivity"
-            android:label="TextureView 测试例子">
-        </activity>
+            android:label="TextureView 测试例子" />
         <activity
             android:name="kr.gdg.android.textureview.CameraActivity"
-            android:label="TextureView 测试例子1">
-        </activity>
+            android:label="TextureView 测试例子1" />
         <activity
             android:name="kr.gdg.android.textureview.GLTriangleActivity"
-            android:label="TextureView 测试例子2">
-        </activity>
+            android:label="TextureView 测试例子2" />
         <activity
             android:name="kr.gdg.android.textureview.CanvasActivity"
-            android:label="TextureView 测试例子3">
-        </activity>
+            android:label="TextureView 测试例子3" />
         <!-- TextureView 测试例子4 -->
         <activity
             android:name="kr.gdg.android.textureview.Canvas2Activity"
-            android:label="@string/canvas_activity">
-        </activity>
+            android:label="@string/canvas_activity" />
         <activity
             android:name="com.ycuwq.datepicker.DatepickerDemoActivity"
-            android:label="滚轮日期选择">
-        </activity>
+            android:label="滚轮日期选择" />
         <activity
             android:name="com.dtr.zxing.activity.CaptureActivity"
             android:label="扫描二维码"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar">
-        </activity>
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" />
         <activity
             android:name="com.dtr.zxing.activity.ResultActivity"
             android:label="二维码条码扫描结果"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Holo.Light"/>
+            android:theme="@android:style/Theme.Holo.Light" />
         <activity
             android:name=".activity.AllInstallAppActivity"
             android:label="所有已安装APP列表"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.SSQActivity"
             android:label="双色球历史记录"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.LoadClassActivity"
             android:label="执行外部Class"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.GameActivity"
             android:label="舒尔特方格 注意力测试"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen">
-        </activity>
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen" />
     </application>
 
 </manifest>

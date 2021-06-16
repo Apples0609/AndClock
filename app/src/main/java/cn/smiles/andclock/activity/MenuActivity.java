@@ -1,9 +1,14 @@
 package cn.smiles.andclock.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dtr.zxing.activity.CaptureActivity;
 
@@ -51,6 +57,7 @@ public class MenuActivity extends AppCompatActivity implements AdapterView.OnIte
         lvMenu.setAdapter(adapter);
         lvMenu.setOnItemClickListener(this);
 
+        requestPermission();
     }
 
     @Override
@@ -104,5 +111,38 @@ public class MenuActivity extends AppCompatActivity implements AdapterView.OnIte
             this.title = title;
             this.clazz = clazz;
         }
+    }
+
+    String[] Permissions = new String[]{
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.SYSTEM_ALERT_WINDOW,
+            Manifest.permission.CAMERA,
+            Manifest.permission.RECORD_AUDIO
+    };
+
+
+    public void requestPermission() {
+        List<String> PermissionList = new ArrayList<>(); // 使用 List 来存储需要授权的权限列表
+        for (String permission : Permissions) {
+            if (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_DENIED) {
+                PermissionList.add(permission);
+            }
+        }
+        /*if (PermissionList.isEmpty()) {
+            Toast.makeText(this, "所有权限均已授权", Toast.LENGTH_LONG).show();
+        } else {
+            String[] permissions = PermissionList.toArray(new String[0]);
+            ActivityCompat.requestPermissions(this, permissions, 1);
+        }*/
+        String[] permissions = PermissionList.toArray(new String[0]);
+        ActivityCompat.requestPermissions(this, permissions, 1);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
     }
 }

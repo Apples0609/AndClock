@@ -17,12 +17,17 @@ package com.dtr.zxing.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.hardware.Camera;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -39,10 +44,18 @@ import com.dtr.zxing.decode.DecodeThread;
 import com.dtr.zxing.utils.BeepManager;
 import com.dtr.zxing.utils.CaptureActivityHandler;
 import com.dtr.zxing.utils.InactivityTimer;
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.ChecksumException;
+import com.google.zxing.RGBLuminanceSource;
 import com.google.zxing.Result;
+import com.google.zxing.common.GlobalHistogramBinarizer;
+import com.google.zxing.qrcode.QRCodeReader;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 
 import cn.smiles.andclock.R;
 
@@ -72,7 +85,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
     private Rect mCropRect = null;
     private Button button6;
-    private Button button61;
+    private Button button61, button16;
 
     public Handler getHandler() {
         return handler;
@@ -97,6 +110,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         scanCropView = (RelativeLayout) findViewById(R.id.capture_crop_view);
         scanLine = (ImageView) findViewById(R.id.capture_scan_line);
         button61 = (Button) findViewById(R.id.button6);
+        button16 = (Button) findViewById(R.id.button16);
         button61.setOnClickListener(v -> {
             String text = button61.getText().toString();
             Camera camera = cameraManager.getCamera();
@@ -111,6 +125,17 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
             camera.setParameters(p);
         });
 
+        button16.setOnClickListener(v -> {
+            /**
+             *以带结果的方式启动Intent，这样就可以拿到图片地址
+             */
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("image/*");
+            intent.putExtra("crop", true);
+            intent.putExtra("return-data", true);
+            startActivityForResult(intent, 0);
+        });
+
         inactivityTimer = new InactivityTimer(this);
         beepManager = new BeepManager(this);
 
@@ -122,6 +147,62 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         animation.setRepeatCount(-1);
         animation.setRepeatMode(Animation.RESTART);
         scanLine.startAnimation(animation);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //uri代表的就是图片在内容解析者所在的地址
+        if (requestCode == 0) {
+            Uri uri = data.getData();
+            if (uri == null) return;
+            System.out.println(uri);
+            ContentResolver cr = this.getContentResolver();
+            try {
+                Bitmap bmp = BitmapFactory.decodeStream(cr.openInputStream(uri));
+                Result result = parseInfoFromBitmap(bmp);
+                button16.postDelayed(() -> {
+                    Handler handler = getHandler();
+                    if (result == null) {
+                        new AlertDialog.Builder(this)
+                                .setCancelable(false)
+                                .setTitle("提示")
+                                .setMessage("没发现二维码或条形码")
+                                .setPositiveButton("确定", null)
+                                .create().show();
+                    } else {
+                        Bundle bundle = new Bundle();
+                        ByteArrayOutputStream out = new ByteArrayOutputStream();
+                        bmp.compress(Bitmap.CompressFormat.JPEG, 50, out);
+                        bundle.putByteArray(DecodeThread.BARCODE_BITMAP, out.toByteArray());
+                        Message message = Message.obtain(handler, R.id.decode_succeeded, result);
+                        message.setData(bundle);
+                        message.sendToTarget();
+                    }
+                }, 1000);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private Result parseInfoFromBitmap(Bitmap bitmap) {
+        int[] pixels = new int[bitmap.getWidth() * bitmap.getHeight()];
+        bitmap.getPixels(pixels, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
+        RGBLuminanceSource source = new RGBLuminanceSource(bitmap.getWidth(),
+                bitmap.getHeight(), pixels);
+        GlobalHistogramBinarizer binarizer = new GlobalHistogramBinarizer(source);
+        BinaryBitmap image = new BinaryBitmap(binarizer);
+        Result result;
+        try {
+            result = new QRCodeReader().decode(image);
+            System.out.println(result);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+
     }
 
     @Override

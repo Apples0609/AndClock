@@ -5,10 +5,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -99,6 +101,13 @@ public class GoHomeActivity extends AppCompatActivity implements CompoundButton.
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        //检查是否已经授予权限
+        if (!Settings.canDrawOverlays(this)) {
+            //若未授权则请求权限
+            Toast.makeText(this, "没有悬浮窗权限", Toast.LENGTH_SHORT).show();
+            switch1.setChecked(false);
+            return;
+        }
         Intent intent = new Intent(this.getApplicationContext(), AndroidService.class);
         intent.putExtra("isChecked", isChecked);
         startService(intent);

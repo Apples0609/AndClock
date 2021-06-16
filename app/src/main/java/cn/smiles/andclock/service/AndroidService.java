@@ -187,7 +187,12 @@ public class AndroidService extends Service {
                 closeWindowView();
             }
         });
-        windowManager.addView(wmContentView, wmParams);
+        try {
+            windowManager.addView(wmContentView, wmParams);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, "没有悬浮窗权限", Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
