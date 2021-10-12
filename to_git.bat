@@ -1,5 +1,5 @@
 @echo off
 git add .
-git commit -m "澶勭悊鍙岃壊鐞冪敓鎴愰殢鏈洪噸澶嶇殑闂"
+git commit -m "处理双色球生成随机重复的问题"
 git push -u origin master
 pause
