@@ -136,7 +136,7 @@ public class SSQActivity extends AppCompatActivity {
 
     private String randomSSQ(boolean isAna) {
         LinkedList<Integer> reds = new LinkedList<>();
-        for (Integer i = 1; i <= 33; i++) {
+        for (int i = 1; i <= 33; i++) {
             reds.add(i);
         }
         if (isAna) {
@@ -146,10 +146,13 @@ public class SSQActivity extends AppCompatActivity {
         }
         StringBuilder ssq = new StringBuilder();
         ArrayList<Integer> tempR = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
+        while (true) {
             Collections.shuffle(reds);
             Integer red = reds.removeFirst();
+            if (tempR.contains(red))
+                continue;
             tempR.add(red);
+            if (tempR.size() >= 6) break;
         }
         Collections.sort(tempR);
         for (Integer red : tempR) {
@@ -157,7 +160,7 @@ public class SSQActivity extends AppCompatActivity {
             ssq.append("，");
         }
         LinkedList<Integer> blues = new LinkedList<>();
-        for (Integer i = 1; i <= 16; i++) {
+        for (int i = 1; i <= 16; i++) {
             blues.add(i);
         }
         if (isAna) {
