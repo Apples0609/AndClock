@@ -4,18 +4,19 @@
 
 package kr.gdg.android.textureview;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.graphics.SurfaceTexture;
 import android.opengl.GLES20;
 import android.opengl.GLUtils;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.TextureView;
 import android.view.TextureView.SurfaceTextureListener;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -42,7 +43,7 @@ public class GLTriangleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.textureview_demo_content);
 
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         mVertices = ByteBuffer.allocateDirect(mVerticesData.length * 4)

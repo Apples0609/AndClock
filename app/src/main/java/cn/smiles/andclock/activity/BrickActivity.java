@@ -1,7 +1,8 @@
 package cn.smiles.andclock.activity;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import cn.smiles.andclock.R;
 import cn.smiles.andclock.view.BrickView;

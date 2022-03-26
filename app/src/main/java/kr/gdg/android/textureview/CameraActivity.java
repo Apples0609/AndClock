@@ -4,13 +4,15 @@ package kr.gdg.android.textureview;
 import android.content.Intent;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.OrientationEventListener;
 import android.view.Surface;
 import android.view.TextureView;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
 import cn.smiles.andclock.R;
 
@@ -27,7 +29,7 @@ public class CameraActivity extends AppCompatActivity {
         setContentView(R.layout.textureview_demo_content);
 
 
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         mCameraSurfaceTextureListener = new CameraSurfaceTextureListener(

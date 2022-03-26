@@ -1,25 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/layout/activity_all_install_app.xml" value="0.3536458333333333" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/layout/activity_apkinstall.xml" value="0.25" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/layout/activity_brick.xml" value="0.3536458333333333" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/layout/activity_calendar.xml" value="0.3536458333333333" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/layout/activity_calendar2.xml" value="0.3536458333333333" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/layout/activity_camera.xml" value="0.3536458333333333" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/layout/activity_capture.xml" value="0.3536458333333333" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/layout/activity_constraint_layout.xml" value="0.3536458333333333" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/layout/activity_game.xml" value="0.3536458333333333" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/layout/activity_go_home.xml" value="0.3536458333333333" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/layout/activity_led_effect.xml" value="0.3536458333333333" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/layout/activity_load_class.xml" value="0.3536458333333333" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/layout/activity_lottery.xml" value="0.3536458333333333" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/layout/activity_lottery_info.xml" value="0.3536458333333333" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/layout/activity_lottery_info2.xml" value="0.3536458333333333" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/layout/activity_main.xml" value="0.3536458333333333" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/layout/activity_menu.xml" value="0.3536458333333333" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/layout/activity_result.xml" value="0.3536458333333333" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/layout/activity_ssq.xml" value="0.3536458333333333" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/layout/activity_view_pager.xml" value="0.3536458333333333" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/layout/activity_visualizer_test.xml" value="0.3536458333333333" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/layout/activity_web_view.xml" value="0.17552083333333332" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/layout/content_scrolling.xml" value="0.17552083333333332" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/layout/datepicker_activity_main.xml" value="0.3536458333333333" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/layout/dialog_date.xml" value="0.3536458333333333" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/layout/item_calendar.xml" value="0.3536458333333333" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/layout/item_calendar_gridview.xml" value="0.3536458333333333" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/layout/item_menu.xml" value="0.3536458333333333" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/layout/item_schulte_grid.xml" value="0.3536458333333333" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/layout/layout_date.xml" value="0.3536458333333333" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/layout/layout_time.xml" value="0.3536458333333333" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/layout/rcv_ssq_item.xml" value="0.3536458333333333" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/layout/snippet_list_row.xml" value="0.3536458333333333" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/layout/textureview_demo_content.xml" value="0.3536458333333333" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/layout/textureview_demo_list.xml" value="0.3536458333333333" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/layout/tools_view_layout.xml" value="0.3536458333333333" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/layout/vp_item_layout.xml" value="0.3536458333333333" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/menu/menu_a_p_k_install.xml" value="0.3536458333333333" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/menu/menu_calendar_item.xml" value="0.3536458333333333" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/menu/menu_lottery_info.xml" value="0.3536458333333333" />
+        <entry key="..\:/Work_Record/2021-10-11/AndClock/app/src/main/res/menu/textureview_actionbar_menu.xml" value="0.3536458333333333" />
+      </map>
+    </option>
+  </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />
     <option name="myDefaultNotNull" value="android.support.annotation.NonNull" />
     <option name="myNullables">
       <value>
-        <list size="4">
+        <list size="12">
           <item index="0" class="java.lang.String" itemvalue="org.jetbrains.annotations.Nullable" />
           <item index="1" class="java.lang.String" itemvalue="javax.annotation.Nullable" />
           <item index="2" class="java.lang.String" itemvalue="edu.umd.cs.findbugs.annotations.Nullable" />
           <item index="3" class="java.lang.String" itemvalue="android.support.annotation.Nullable" />
+          <item index="4" class="java.lang.String" itemvalue="org.checkerframework.checker.nullness.compatqual.NullableDecl" />
+          <item index="5" class="java.lang.String" itemvalue="androidx.annotation.Nullable" />
+          <item index="6" class="java.lang.String" itemvalue="org.eclipse.jdt.annotation.Nullable" />
+          <item index="7" class="java.lang.String" itemvalue="com.android.annotations.Nullable" />
+          <item index="8" class="java.lang.String" itemvalue="androidx.annotation.RecentlyNullable" />
+          <item index="9" class="java.lang.String" itemvalue="javax.annotation.CheckForNull" />
+          <item index="10" class="java.lang.String" itemvalue="org.checkerframework.checker.nullness.qual.Nullable" />
+          <item index="11" class="java.lang.String" itemvalue="org.checkerframework.checker.nullness.compatqual.NullableType" />
         </list>
       </value>
     </option>
     <option name="myNotNulls">
       <value>
-        <list size="4">
+        <list size="11">
           <item index="0" class="java.lang.String" itemvalue="org.jetbrains.annotations.NotNull" />
           <item index="1" class="java.lang.String" itemvalue="javax.annotation.Nonnull" />
           <item index="2" class="java.lang.String" itemvalue="edu.umd.cs.findbugs.annotations.NonNull" />
           <item index="3" class="java.lang.String" itemvalue="android.support.annotation.NonNull" />
+          <item index="4" class="java.lang.String" itemvalue="androidx.annotation.RecentlyNonNull" />
+          <item index="5" class="java.lang.String" itemvalue="org.checkerframework.checker.nullness.qual.NonNull" />
+          <item index="6" class="java.lang.String" itemvalue="com.android.annotations.NonNull" />
+          <item index="7" class="java.lang.String" itemvalue="androidx.annotation.NonNull" />
+          <item index="8" class="java.lang.String" itemvalue="org.checkerframework.checker.nullness.compatqual.NonNullType" />
+          <item index="9" class="java.lang.String" itemvalue="org.checkerframework.checker.nullness.compatqual.NonNullDecl" />
+          <item index="10" class="java.lang.String" itemvalue="org.eclipse.jdt.annotation.NonNull" />
         </list>
       </value>
     </option>

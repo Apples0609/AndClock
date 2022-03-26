@@ -8,12 +8,14 @@ import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.SurfaceTexture;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.TextureView;
 import android.view.TextureView.SurfaceTextureListener;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
 import cn.smiles.andclock.R;
 
@@ -29,7 +31,7 @@ public class CanvasActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.textureview_demo_content);
 
-		android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+		ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
 		mTextureView = (TextureView) findViewById(R.id.texture_view);

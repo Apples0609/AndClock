@@ -6,9 +6,10 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -92,34 +93,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.button:
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("file/*");
-                startActivityForResult(intent, PICKFILE_REQUEST_CODE);
-                break;
-            case R.id.button2:
-                playMus(player);
-                break;
-            case R.id.button3:
-//                player.pause();
+        int id = view.getId();
+        if (id == R.id.button) {
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("file/*");
+            startActivityForResult(intent, PICKFILE_REQUEST_CODE);
+        } else if (id == R.id.button2) {
+            playMus(player);
+        } else if (id == R.id.button3) {
+            //                player.pause();
 //                am.abandonAudioFocus(focusChangeListener);
 
-                ArrayList<String> flist = new ArrayList<>();
-                File root = Environment.getExternalStorageDirectory();
-                File[] files = root.listFiles(new FilenameFilter() {
-                    @Override
-                    public boolean accept(File dir, String name) {
-                        return !name.startsWith(".");
-                    }
-                });
-                for (File f : files) {
-                    flist.add(f.getName());
+            ArrayList<String> flist = new ArrayList<>();
+            File root = Environment.getExternalStorageDirectory();
+            File[] files = root.listFiles(new FilenameFilter() {
+                @Override
+                public boolean accept(File dir, String name) {
+                    return !name.startsWith(".");
                 }
-                System.out.println(flist);
-                Collections.sort(flist, comparatorName);
-                System.out.println(flist);
-                break;
+            });
+            assert files != null;
+            for (File f : files) {
+                flist.add(f.getName());
+            }
+            System.out.println(flist);
+            flist.sort(comparatorName);
+            System.out.println(flist);
         }
     }
 
@@ -141,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * 按照文件名称排序规则
      */
-    private static Comparator comparatorName = new Comparator<String>() {
+    private static final Comparator<String> comparatorName = new Comparator<String>() {
         @Override
         public int compare(String f1, String f2) {
             return f1.compareToIgnoreCase(f2);

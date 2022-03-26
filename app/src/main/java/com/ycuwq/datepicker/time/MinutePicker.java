@@ -1,8 +1,9 @@
 package com.ycuwq.datepicker.time;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+
+import androidx.annotation.Nullable;
 
 import com.ycuwq.datepicker.WheelPicker;
 

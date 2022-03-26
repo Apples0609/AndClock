@@ -1,10 +1,11 @@
 package cn.smiles.andclock.view;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.widget.LinearLayout;
+
+import androidx.annotation.Nullable;
 
 
 public class MyLinearLayout extends LinearLayout {

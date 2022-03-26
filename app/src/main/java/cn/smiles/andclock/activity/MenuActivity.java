@@ -6,10 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +14,11 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.dtr.zxing.activity.CaptureActivity;
 
@@ -51,6 +52,7 @@ public class MenuActivity extends AppCompatActivity implements AdapterView.OnIte
         datas.add(new MenuEntity("安卓辅助", GoHomeActivity.class));
         datas.add(new MenuEntity("舒尔特方格", GameActivity.class));
         datas.add(new MenuEntity("LED文字滚动", LedEffectActivity.class));
+        datas.add(new MenuEntity("APK文件安装", APKInstallActivity.class));
 
         datas.add(new MenuEntity("=测试学习=", TestStudyActivity.class));
         MenuAdapter adapter = new MenuAdapter(this, datas);
@@ -118,7 +120,8 @@ public class MenuActivity extends AppCompatActivity implements AdapterView.OnIte
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.SYSTEM_ALERT_WINDOW,
             Manifest.permission.CAMERA,
-            Manifest.permission.RECORD_AUDIO
+            Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.MANAGE_EXTERNAL_STORAGE
     };
 
 
