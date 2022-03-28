@@ -56,41 +56,16 @@ public class APKInstallActivity extends AppCompatActivity {
                 assert item1 != null;
                 if (item1.toLowerCase().endsWith(".apk")) {
                     String path = Objects.requireNonNull(map.get("item3"));
-                    /*Intent intent = new Intent(Intent.ACTION_VIEW);
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
                     File apkFile = new File(path);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     Uri uri = FileProvider.getUriForFile(this, getPackageName() + ".provider", apkFile);
                     intent.setDataAndType(uri, "application/vnd.android.package-archive");
-                    startActivity(intent);*/
-                    installApk(path);
+                    startActivity(intent);
                 }
             }
         });
-    }
-
-    /**
-     * 下载成功后安装apk
-     *
-     * @param path 安装文件
-     */
-    public void installApk(String path) {
-        //此处file应为apk下载的完整路径文件，这里下载在了外部存储的私有缓存文件夹下，
-        // 你可以选择其他存储地址如：外置SD卡等，但是要注意与file_paths.xml中<external-cache-path>，<files-path>......里的
-        //path="myApkFile/" 属性共享的文件夹目录对应一致
-        File file = new File(path);
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        // 由于没有在Activity环境下启动Activity,设置下面的标签
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        //判读版本是否在7.0以上
-        // 参数1 上下文, 参数2 Provider主机地址 和清单配置文件中保持一致
-        // 参数2 = android:authorities="应用包名.fileprovider"属性值
-        // 参数3 = 上一步中共享的apk文件
-        Uri apkUri = FileProvider.getUriForFile(this, getPackageName() + ".provider", file);
-        //添加这一句表示对目标应用临时授权该Uri所代表的文件
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
-        startActivity(intent);
     }
 
     private void showItems(String pf) {
